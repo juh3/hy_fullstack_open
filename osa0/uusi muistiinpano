@@ -1,0 +1,24 @@
+#miten sivu latautuu käyttäjälle
+
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+palvelin -> selain: HTML-koodi
+selain -> palvelin HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.css
+palvelin -> selain main.css
+selain -> palvelin HTTP GET https://studies.cs.helsinki.fi/exampleapp/main.js
+palvelin -> selain main.js
+
+#selain alkaa suorittamaan js-koodia, joka pyytää json-datan palvelimelta
+
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+palvelin -> selain: [{"content":"hey","date":"2022-03-15T11:32:07.585Z"},...
+#html kertoo miten data näytetään, css tyylittää sen karkeasti
+
+#kun käyttäjä lähettää vastauksen:
+#tapahtumankäsittelijä aktivoituu selaimessa ja alkaa suorittamaan funktiota
+# if-funktio, toteutuu jos readystate = 4 (operaatio on tehty) ja status = 200 (HTTP STATUS CODE)
+# joka käskee hakemaan palvelimelta uudestaan data.jsonin
+selain -> palvelin: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
+palvelin -> selain: data.json
+
+# selain lisää uuden muistiinpanon 
+
