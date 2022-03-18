@@ -18,6 +18,7 @@ const App = () => {
   const n = anecdotes.length
   const [points, setPoints] = useState(Array(n).fill(0)) // Registry of votes
   const [mostVotes,setMostvotes] = useState(0)
+
   const handleClick = () => {
     const value = Math.floor(Math.random()*anecdotes.length)
     setVote(points[value])
@@ -31,10 +32,13 @@ const App = () => {
     const amount = copy[selected]
     setVote(amount)
     setPoints(copy)
-
-    const index = Math.max(points)
-    index = points.indexOf(index)
-    setMostvotes(anecdotes[index])
+    const winning = 0
+    for (let i =0; i <points.length; i++){
+      if (points[i] > winning){
+        setMostvotes(i)
+      }
+    }
+    
   }
 
   return (
