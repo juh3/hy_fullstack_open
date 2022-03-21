@@ -1,3 +1,34 @@
+  //simple component return with a wavebracket
+  const Course = (props) =>(
+    <Header course = {props.course}/>
+    )
+
+  const Header = (props) =>(
+    <h1> {props.course.name}</h1>
+    )
+
+  const Part = (props) =>{
+    return(
+
+      <ul> {props.course.parts.map(part =>
+        <li key = {part.id}>
+          {part.name} {part.exercises}
+          </li>
+         )}
+   </ul>
+    )
+  }
+
+
+  const Total = (props) =>{
+    const array_of_exercises = props.course.map(part => part.exercises)
+    const initialValue = 0
+    const total = array_of_exercises.reduce((s,p)=> s + p, initialValue)
+    return(
+      <p>total of {total} exercises </p>
+    )
+  }
+  
 const App = () => {
   const course = {
     name: 'Half Stack application development',
@@ -26,46 +57,12 @@ const App = () => {
       }
     ]
   }
-  const Course = (props) =>(
-        <Header course = {props.course}/>
-        )
-
-  const Header = (props) =>(
-    <h1> {props.course.name}</h1>
-  )
-  
-  const Part = (props) =>{
-    return(
-
-      <ul> {props.course.parts.map(part =>
-        <li key = {part.id}>
-          {part.name} {part.exercises}
-          </li>
-         )}
-   </ul>
-    )
-  }
-
-  const Total = (props) =>{
-    let total = 0
-    for (let i = 0; i<props.course.parts.length;i++){
-      total += props.course.parts[i].exercises
-    }
-
-    return(
-      <p>total of {total} exercises </p>
-    )
-  }
-
-
-
-
 
   return (
     <div>
       <Course course={course} />
       <Part course = {course}/>
-      <Total course = {course}/>
+      <Total course = {course.parts}/>
       
     </div>
   )
