@@ -1,6 +1,9 @@
 import { useState } from 'react'
-
-
+import PersonForm from './components/PersonForm'
+import Filter from './components/Filter'
+import PrintBook from './components/PrintBook'
+  
+ 
 const App = () => {
   const [persons, setPersons] = useState([
     { name: 'Arto Hellas', number: '045-1231122'},
@@ -28,86 +31,67 @@ const App = () => {
 
   }
 
-  const filtered = !newSearch
-    ? persons
-    : persons.filter((persons) =>
-        persons.name.toLowerCase().includes(newSearch.toLowerCase())
-    )
+  
 
   const addName=(event) =>{
     event.preventDefault()
     
     if(persons.find(person =>person.name === newName)){
       alert(`${newName} is already in the phonebook`)
-      setNewName('')
     }
 
     else{
     // creating a nameObject with the newName
-    const nameObject = {
-      name: newName,
-      number: newNumber,
+      const nameObject = {
+        name: newName,
+        number: newNumber,
+      }
+      setPersons([...persons,nameObject])
+      //reset the value of NewName, ready for a new name
     }
-    setPersons([...persons,nameObject])
-    //reset the value of NewName, ready for a new name
-    setNewName('')
-    console.log(persons)
-    }
+   resetForm()
   }
 
-  const searchName = (event) =>{
-
+  const resetForm = () => {
+    setNewName("")
+    setNewNumber("")
   }
+  
+  const filtered = !newSearch
+    ? persons
+    : persons.filter((persons) =>
+        persons.name.toLowerCase().includes(newSearch.toLowerCase())
+    )
 
   return (
     <div>
       <h2>Phonebook</h2> 
 
-
-      <form onSubmit = {searchName}>
-      <div>
-        filter shown with: <input
-        value = {newSearch}
-        onChange = {handleSearch}
+      <Filter 
+        nameValue = {newSearch}
+        handleSearch = {(event) => handleSearch(event)}
         />
-      </div>
-      </form>
 
       <h2> add a new</h2>
 
-      <form onSubmit = {addName}>
-        <div>
-          name: <input
-          value = {newName} 
-          onChange = {handleNameChange}
-          />
-        </div>
+      <PersonForm
+        nameValue = {newName}
+        numberValue = {newNumber}
+        onSubmit = {(event) => {addName(event)}}
+        handleNameChange = {(event) => handleNameChange(event)}
+        handleNumberChange = {(event) => handleNumberChange(event)}
+        />
 
-        <div>
-          number: <input
-          value = {newNumber}
-          onChange = {handleNumberChange}
-          />
-        </div>
-
-        <div>
-          <button type="submit">add</button>
-        </div>
-
-      </form>
       <h2>Numbers</h2>
-      <ul>
-        //map over the filtered array and display the appropriate list of people.
-        {filtered.map(person => (
-          <p key = {person.name}>
-              {person.name} {person.number}
-          </p>
-        ))}
-      </ul>
+
+      <PrintBook 
+        persons = {filtered}
+        />
+
       
     </div>
   )
 
 }
 
-export default App
+export default App;
