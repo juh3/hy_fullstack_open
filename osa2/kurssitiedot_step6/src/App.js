@@ -26,21 +26,17 @@ const App = () => {
       }
     ]
   }
-  const Course = (props) =>{
-    return(
-      <div>
+  const Course = (props) =>(
         <Header course = {props.course}/>
-        <Part course = {props.course}/>
-        
-      </div>
-    )
-  }
+        )
+
   const Header = (props) =>(
     <h1> {props.course.name}</h1>
   )
   
   const Part = (props) =>{
     return(
+
       <ul> {props.course.parts.map(part =>
         <li key = {part.id}>
           {part.name} {part.exercises}
@@ -49,9 +45,27 @@ const App = () => {
    </ul>
     )
   }
+
+  const Total = (props) =>{
+    let total = 0
+    for (let i = 0; i<props.course.parts.length;i++){
+      total += props.course.parts[i].exercises
+    }
+
+    return(
+      <p>total of {total} exercises </p>
+    )
+  }
+
+
+
+
+
   return (
     <div>
       <Course course={course} />
+      <Part course = {course}/>
+      <Total course = {course}/>
       
     </div>
   )
