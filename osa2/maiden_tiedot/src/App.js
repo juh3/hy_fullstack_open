@@ -7,24 +7,17 @@ const Search = (props) => {
       <div>
         find countries <input
         value = {props.addSearch}
+        placeholder = 'Search for a country'
         onChange = {props.handleSearch}
         />
       </div> 
     </form>
-      )
-}
-
-const Filter = (props) => {
-
-  return(
-    
   )
-
 }
 
 function App() {
-  const [dataCountries,setData] = useState([])
-  const [newSearch,setSearch] = useState([" "])
+  const [dataCountries,setData] = useState([' '])
+  const [newSearch,setSearch] = useState([' '])
 
   const hook = () => {
     console.log('effect')
@@ -33,10 +26,11 @@ function App() {
       .then(response => {
         setData(response.data)
       })
-  }
-
+      }
   useEffect(hook,[])
   console.log(dataCountries)
+  console.log(dataCountries[0].name.common)
+
 
   const handleSearch = (event) =>{
     console.log(event.target.value)
@@ -47,20 +41,15 @@ function App() {
     event.preventDefault()
 
   }
-
-  const filtered =! newSearch
-    ?
-    : 
-
+  
+ 
 
   return(
     <div>
       <Search handleSearch = {(event) => handleSearch(event)} 
         search = {newSearch} 
       />
-      <Filter search = {newSearch}
-              countries = {dataCountries} 
-      />
+     
     </div>
   )
 }
