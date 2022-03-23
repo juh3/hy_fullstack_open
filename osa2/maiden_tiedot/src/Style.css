@@ -1,5 +1,16 @@
-ul {
-    list-style-type: none;
- }
+.first-ul{
+    list-style: none;
+    padding: 0;
+}
 
+.second-ul{
+    list-style: inside;
+}
 
+div{
+    padding:0;
+}
+
+ul{
+    padding:0;
+}
