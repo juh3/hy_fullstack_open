@@ -1,3 +1,4 @@
+import Weather from './Weather.js'
 
 const CountryInfo = ({country}) =>{
   console.log(country)
@@ -20,7 +21,9 @@ const CountryInfo = ({country}) =>{
          )}
         </ul> 
       <img src = {country.flags.png}/> 
+      <Weather capital = {country.capital} />
     </div>
+    
 
 
   
