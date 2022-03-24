@@ -1,5 +1,6 @@
 import CountryInfo from './CountryInfo.js'
 import Clickandsee from './Clickandsee.js'
+import Weather from './Weather.js'
 
 const Nations = ({search, dataCountries, handleSearch}) =>{
   const lengthofsearch = search.length

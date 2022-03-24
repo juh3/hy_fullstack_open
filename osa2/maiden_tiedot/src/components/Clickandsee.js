@@ -6,7 +6,7 @@ const Clickandsee = ({datafilter, handleSearch}) => {
         {datafilter.map(country =>
         <li key = {country.name.common}>
           {country.name.common}
-          <button type = "button" value = {country.name.common} onClick = {handleSearch}> show </button>
+          <button type = "button" value = {country.name.common} onClick = {handleSearch}> show info </button>
           </li>
         )}
         

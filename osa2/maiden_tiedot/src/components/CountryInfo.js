@@ -1,10 +1,8 @@
-import Weather from './Weather.js'
-
+import Weather from "./Weather"
 const CountryInfo = ({country}) =>{
   console.log(country)
   console.log("Trying to give info on one country")
   console.log("Country's languages", country.languages)
-  console.log(country)
   console.log(country.flags)
   return(
     <div>
@@ -21,7 +19,8 @@ const CountryInfo = ({country}) =>{
          )}
         </ul> 
       <img src = {country.flags.png}/> 
-      <Weather capital = {country.capital} />
+
+      <Weather capital = {country.capital[0]}/>
     </div>
     
 

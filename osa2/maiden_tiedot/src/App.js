@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react'
 import axios from 'axios'
 import Style from './Style.css'
 import Nations from './components/Nations.js'
-import OnSearch from './components/Searchimp'
+import OnSearch from './components/onSearch'
 
 
 const App = () => {
@@ -18,7 +18,6 @@ const App = () => {
       })
       }
   useEffect(hook,[])
-
 
   
 

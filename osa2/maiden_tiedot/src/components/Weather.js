@@ -1,23 +1,34 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import RenderWeather from './RenderWeather'
 
 const Weather = ({capital}) =>{
-  const [weatherData,setWeatherdata] = useState([])
-  console.log(capital)
-  const api = "api.openweathermap.org/data/2.5/weather?="+capital+"&appid=4cbe24a96e2c79d855286d8e61c045b8"  
-  axios
-  .get(api)
-  .then(response => {
-    setWeatherdata(response.data)
-
-  })
-  console.log(weatherData)
-  return(
-    <div>
-      <h1> Weather in {capital}</h1>
-    </div>
-  )
+  const [weatherData,setWeatherdata] = useState()
+  console.log(process.env.REACT_APP_KEY)
+  const API_KEY =`${process.env.REACT_APP_API_KEY_YT}`
+  console.log("This is the capital", capital)
+  const api = "http://api.openweathermap.org/data/2.5/weather?q="+capital+`&appid=+`+API_KEY
   
+  const hook2 = () => {
+    axios
+    .get(api)
+    .then(response =>{
+      setWeatherdata(response.data)
+    })
+  }
+
+  useEffect(hook2,[])
+
+
+  console.log(weatherData)
+
+
+
+  return(
+    <RenderWeather weatherData = {weatherData}/>
+  )
 }
+  
+
 
 export default Weather;
