@@ -1,8 +1,8 @@
 import PersonForm from './components/PersonForm'
 import Filter from './components/Filter'
 import PrintBook from './components/PrintBook'
-import axios from 'axios'
 import {useState, useEffect} from 'react'
+import personService from './services/personService'
 
 const App = () => {
   const [persons, setPersons] = useState([])
@@ -10,18 +10,20 @@ const App = () => {
   const[newNumber, setNewNumber] = useState('')
   const[newSearch, setSearch] = useState('')
 
+  console.log(persons)
 
   const hook = () => {
     console.log('effect')
-    axios
-    .get('http://localhost:3001/persons')
-    .then(response =>{
-        console.log('promise fullfilled')
-        setPersons(response.data)
-      })
+    personService
+    .getAll()
+    .then(initialPersons =>{
+      setPersons(initialPersons)
+    })
   }
 
   useEffect(hook,[])
+
+  console.log(persons)
 
   const handleNameChange = (event) =>{
     console.log(event.target.value)
@@ -39,10 +41,27 @@ const App = () => {
 
   }
 
-  
+  const handleDeletion = (event) =>{
+    console.log("Pressed  delete button")
+    console.log("Entry to be deleted",event.target.value)
+    const target_id = event.target.value
+    console.log(target_id)
+    const person = persons.find(n => n.name === target_id)
+    if (window.confirm("Delete " + person.name + " ?")){
+      console.log(person.name, person.id)
+      personService
+      .redact(person.id)
+      console.log(persons)
+      const updatedpersons = persons.filter(n => n.id !== person.id)
+      setPersons(updatedpersons)
+      
+      
+    }
+  }
 
   const addName=(event) =>{
     event.preventDefault()
+   
     
     if(persons.find(person =>person.name === newName)){
       alert(`${newName} is already in the phonebook`)
@@ -54,16 +73,22 @@ const App = () => {
         name: newName,
         number: newNumber,
       }
-      setPersons([...persons,nameObject])
+      
+      personService
+      .create(nameObject)
+      .then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        
+      })
+      
+      
       //reset the value of NewName, ready for a new name
     }
-   resetForm()
+    setNewName("")
+    setNewNumber("")
   }
 
-  const resetForm = () => {
-    setNewName(" ")
-    setNewNumber(" ")
-  }
+  
   
   const filtered = !newSearch
     ? persons
@@ -94,6 +119,7 @@ const App = () => {
 
       <PrintBook 
         persons = {filtered}
+        handleDeletion = {(event) => handleDeletion(event)}
         />
 
       
