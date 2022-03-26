@@ -8,7 +8,7 @@ import OnSearch from './components/onSearch'
 const App = () => {
   const [dataCountries,setData] = useState([])
   const [search,setSearch] = useState([])
-
+  
   const hook = () => {
     console.log('effect')
     axios

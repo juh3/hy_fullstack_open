@@ -4,10 +4,9 @@ import RenderWeather from './RenderWeather'
 
 const Weather = ({capital}) =>{
   const [weatherData,setWeatherdata] = useState()
-  console.log(process.env.REACT_APP_KEY)
-  const API_KEY =`${process.env.REACT_APP_API_KEY_YT}`
+ 
   console.log("This is the capital", capital)
-  const api = "http://api.openweathermap.org/data/2.5/weather?q="+capital+`&appid=+`+API_KEY
+  const api = "http://api.openweathermap.org/data/2.5/weather?q="+capital+`&appid=`+process.env.REACT_APP_API_KEY
   
   const hook2 = () => {
     axios
@@ -22,7 +21,11 @@ const Weather = ({capital}) =>{
 
   console.log(weatherData)
 
-
+  if(weatherData === null){
+    return(
+      <p> No weather found </p>
+    )
+  }
 
   return(
     <RenderWeather weatherData = {weatherData}/>
