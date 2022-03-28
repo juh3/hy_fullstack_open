@@ -2,18 +2,33 @@
   "persons": [
     {
       "name": "Mary Poppendieck",
-      "number": "39-23-6423122",
+      "number": "4124 ",
       "id": 4
-    },
-    {
-      "name": "Maikki Meikäläinen",
-      "number": "04040560623023",
-      "id": 6
     },
     {
       "name": "Tanja Tähti",
       "number": "321415",
       "id": 8
+    },
+    {
+      "name": "Kalle Kallio",
+      "number": "35r235",
+      "id": 9
+    },
+    {
+      "name": "Antti Autio",
+      "number": "523465 657567",
+      "id": 10
+    },
+    {
+      "name": "Beibi P",
+      "number": "141 5312",
+      "id": 11
+    },
+    {
+      "name": "Arppa",
+      "number": "3214 1243124",
+      "id": 12
     }
   ]
 }

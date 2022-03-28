@@ -3,12 +3,14 @@ import Filter from './components/Filter'
 import PrintBook from './components/PrintBook'
 import {useState, useEffect} from 'react'
 import personService from './services/personService'
+import Notification from './components/Notification'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const[newNumber, setNewNumber] = useState('')
   const[newSearch, setSearch] = useState('')
+  const[notification,setNotification] = useState(null)
 
   console.log(persons)
 
@@ -19,6 +21,7 @@ const App = () => {
     .then(initialPersons =>{
       setPersons(initialPersons)
     })
+    
   }
 
   useEffect(hook,[])
@@ -54,6 +57,10 @@ const App = () => {
       console.log(persons)
       const updatedpersons = persons.filter(n => n.id !== person.id)
       setPersons(updatedpersons)
+      setNotification(`Successfully deleted ${person.name}`)
+      setTimeout(() =>{
+        setNotification(null)
+      },5000)
       
       
     }
@@ -73,6 +80,23 @@ const App = () => {
         .then(returnedPerson => {
           setPersons(persons.map(dude => dude.id !== changedPerson.id ? dude : returnedPerson))
         })
+        .catch((error) =>{
+          setNotification({
+            error: `Information for ${person.name} has already been removed from the server`
+          })
+          })
+          setPersons(persons.filter(n => n.id !== person.id))
+          setTimeout(() =>{
+            setNotification(null)
+          }, 5000)
+
+          
+        
+        setNotification(`Successfully updated phonenumber of ${person.name}`)
+        setTimeout(() =>{
+          setNotification(null)
+        }, 5000)
+        
     }
   }
     else{
@@ -88,7 +112,14 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         
       })
-      
+      setNotification(`Added ${newName}`)
+      console.log("Trying to render a notification")
+      console.log(`Added ${newName}`)
+      setNewName("")
+      setNewNumber("")
+      setTimeout(() => {
+        setNotification(null)
+      },5000)
       
       //reset the value of NewName, ready for a new name
     }
@@ -107,7 +138,10 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2> 
-
+      
+      <Notification message = {notification}
+      className = {notification?.notification ? ".notification" : ".error"}
+      />
       <Filter 
         nameValue = {newSearch}
         handleSearch = {(event) => handleSearch(event)}
