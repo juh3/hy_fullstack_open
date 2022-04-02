@@ -57,7 +57,8 @@ const App = () => {
       console.log(persons)
       const updatedpersons = persons.filter(n => n.id !== person.id)
       setPersons(updatedpersons)
-      setNotification(`Successfully deleted ${person.name}`)
+      setNotification({text:`Successfully deleted ${person.name}`,
+      type:"success"})
       setTimeout(() =>{
         setNotification(null)
       },5000)
@@ -82,7 +83,8 @@ const App = () => {
         })
         .catch((error) =>{
           setNotification({
-            error: `Information for ${person.name} has already been removed from the server`
+            text: `Information for ${person.name} has already been removed from the server`,
+            type: "failure"
           })
           })
           setPersons(persons.filter(n => n.id !== person.id))
@@ -92,7 +94,8 @@ const App = () => {
 
           
         
-        setNotification(`Successfully updated phonenumber of ${person.name}`)
+        setNotification({text:`Successfully updated phonenumber of ${person.name}`,
+        type: "success"})
         setTimeout(() =>{
           setNotification(null)
         }, 5000)
@@ -112,7 +115,8 @@ const App = () => {
         setPersons(persons.concat(returnedPerson))
         
       })
-      setNotification(`Added ${newName}`)
+      setNotification({text:`Added ${newName}`,
+      type: "success"})
       console.log("Trying to render a notification")
       console.log(`Added ${newName}`)
       setNewName("")
@@ -139,9 +143,8 @@ const App = () => {
     <div>
       <h2>Phonebook</h2> 
       
-      <Notification message = {notification}
-      className = {notification?.notification ? ".notification" : ".error"}
-      />
+      <Notification message = {notification}/>
+
       <Filter 
         nameValue = {newSearch}
         handleSearch = {(event) => handleSearch(event)}
