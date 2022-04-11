@@ -14,7 +14,7 @@ const BlogPosts = ({blogs}) => {
       {blogs.map(blog => 
         <li key = {blog.author}>
           Blog name: &nbsp; &nbsp; "{blog.title}" &nbsp; by &nbsp; {blog.author}. &nbsp;&nbsp;
-          Upvotes: {blog.likes}&nbsp;&nbsp;&nbsp;  
+          Upvotes: {blog.number}&nbsp;&nbsp;&nbsp;  
           Website:&nbsp; {blog.url}
         </li>
         )}
