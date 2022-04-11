@@ -1,0 +1,18 @@
+{
+  "blogList":[
+    {
+      "title": "How to",
+      "author": "Katja Loimaa",
+      "url": "https://how_to_katja_loimaa.com",
+      "likes": "4123"
+    },
+
+    {
+      "title": "Fishing 101",
+      "author": "Mikko Kaikkonen",
+      "url": "https://suomikalaa.net",
+      "likes": "524"
+    }
+
+  ]
+}
