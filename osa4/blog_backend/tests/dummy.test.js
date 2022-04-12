@@ -148,7 +148,7 @@ describe('pick the favorite blog of the list', () => {
   })
 })
     
-describe('see the author that has the most blogs', () => {
+/*describe('see the author that has the most blogs', () => {
   const listWithManyBlogs = [
     {
       _id: "5a422a851b54a676234d17f7",
@@ -209,4 +209,4 @@ describe('see the author that has the most blogs', () => {
       }
     )
   })
-})
+})*/
