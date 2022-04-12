@@ -4,7 +4,7 @@ const app = require('../app')
 
 const api = supertest(app)
 
-test('notes are returned as json', async () => {
+test('blogs are returned as json', async () => {
   await api
     .get('/api/bloglists')
     .expect(200)
@@ -19,10 +19,10 @@ test('there are two blogs', async () => {
 
 test('the first blog is about Testi Olennon blogi', async () => {
   const response = await api.get('/api/bloglists')
-
-  expect(response.body[0].content).toEqual({author:"Test Olento",
+  expect(response.body[0]).toEqual({author:"Test Olento",
     title: "Testi Olennon blogi",
-    number: "404",
+    id: "625566c5aa67033796983ac4",
+    number: 404,
     url: "http://www.testiolennongblogi.fi"})
 })
 
