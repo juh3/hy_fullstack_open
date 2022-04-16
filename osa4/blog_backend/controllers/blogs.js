@@ -16,8 +16,12 @@ blogsRouter.put('/:id', (request,response) => {
     { new:true, runValidators: true, context: 'query' }
   )
     .then(updatedEntry => {
-      response.json(updatedEntry)
-})
+      if(updatedEntry){
+        response.json(updatedEntry)
+      }else{
+        response.status(400).end()
+      }
+    })
 })
 
 blogsRouter.get('/', (request, response) => {
@@ -25,12 +29,12 @@ blogsRouter.get('/', (request, response) => {
   Bloglist
     .find({})
     .then(bloglist => {
+      if(bloglist){
       response.json(bloglist)
+      }else{
+        logger.error('Cant get collection from MONGODB')
+      }
     })
-    .catch((error) => {
-      logger.error('Cant get')
-    })
-    
 })
 
 
@@ -63,11 +67,13 @@ blogsRouter.post('/', (request, response) => {
   blog
     .save()
     .then(result => {
+      if(result){
       response.status(201).json(result)
-    })
-    .catch((error) => {
+    }
+    else{
       logger.error('save unsuccessful')
-    })
+    }
+  })
 })
 
 module.exports = blogsRouter

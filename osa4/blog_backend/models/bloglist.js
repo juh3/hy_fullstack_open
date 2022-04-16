@@ -1,7 +1,5 @@
 const mongoose = require('mongoose')
 
-
-
 const blogSchema = new mongoose.Schema({
   title:{
     required: true,
@@ -12,12 +10,13 @@ const blogSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  
+
   url: String,
   likes:{
     type: Number,
     default: 0
   }
+
 })
 
 blogSchema.set('toJSON', {

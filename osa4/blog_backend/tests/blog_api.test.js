@@ -2,9 +2,15 @@ const mongoose = require('mongoose')
 const supertest = require('supertest')
 const helper = require('./test_helper')
 const app = require('../app')
-const bloglist = require('../models/bloglist')
+const Bloglist = require('../models/bloglist')
+const { update } = require('lodash')
 
 const api = supertest(app)
+
+beforeEach(async () => {
+  await Bloglist.deleteMany({})
+  await Bloglist.insertMany(helper.initialBlogs)
+})
 
 describe('initial notes are saved and fetched correctly', () => {
 
@@ -23,12 +29,9 @@ describe('initial notes are saved and fetched correctly', () => {
 
   test('the first blog is about Testi Olennon blogi', async () => {
     const response = await api.get('/api/bloglists')
-    expect(response.body[0]).toEqual({author:"Test Olento",
-      title: "Testi Olennon blogi",
-      id: "625566c5aa67033796983ac4",
-      likes: 404,
-      url: "http://www.testiolennongblogi.fi"})
-  })
+    const titles = response.body.map(x => x.title)
+    expect(titles).toContain('Testi Olennon blogi')
+})
 })
 
 describe('specific parameters exists', () => {
@@ -94,6 +97,30 @@ describe('different POST request work', () => {
   })
 })
 
+describe('The blog updates', () => {
+  test('Like updates work if blog exists', async() => {
+    const blogs = await helper.blogsInDb()
+    id = blogs[0].id
+    await api
+      .put(`/api/bloglists/${id}`)
+      .send({likes:132})
+      .expect(200)
+    const updatedblogs = await helper.blogsInDb()
+    const updatedBlog = updatedblogs[0]
+    expect(updatedBlog.likes).toBe(132)    
+    expect(updatedblogs).toHaveLength(blogs.length)  
+  })
+
+  test('Trying to update non-existing blog', async() => {
+    const blogs = await helper.blogsInDb()
+    const id = mongoose.Types.ObjectId()
+    await api
+      .put(`/api/bloglists/${id}`)
+      .send({likes:132})
+      .expect(400)
+  })
+})
+
 describe('Delete request deletes the blog', () => {
 
   test('delete works', async() => {
@@ -101,7 +128,7 @@ describe('Delete request deletes the blog', () => {
     const deleteBlog_id = "6255674baa67033796983ac5"
     await api
     .delete(`/api/bloglists/${deleteBlog_id}`)
-    
+    .expect(204)
 
     const response = await api.get('/api/bloglists')
     expect(response.body).not.toContain('testauksen iloa')
