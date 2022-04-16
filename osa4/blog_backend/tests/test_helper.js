@@ -5,7 +5,7 @@ const initialBlogs =
     {
       author: "Test Olento", 
       id: "625566c5aa67033796983ac4", 
-      number: 404, 
+      likes: 404, 
       title: "Testi Olennon blogi", 
       url: "http://www.testiolennongblogi.fi"
     }, 
@@ -13,7 +13,7 @@ const initialBlogs =
     {
       author: "Lista Objekti",
       id: "6255674baa67033796983ac5",
-      number: 123,
+      likes: 123,
       title: "testauksen iloa",
       url: "http//:www.ilonatestauksessa.fi"
     }

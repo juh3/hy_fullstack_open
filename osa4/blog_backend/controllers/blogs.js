@@ -1,14 +1,26 @@
-const blogRouter = require('express').Router()
+const blogsRouter = require('express').Router()
 const Bloglist = require('../models/bloglist')
 const logger = require('../utils/logger')
 
 
-blogRouter.get('/info', (req, res) => {
+blogsRouter.get('/info', (req, res) => {
   const date = new Date()
   res.send(`<p> ${date} </p>`)
   })
 
-blogRouter.get('/', (request, response) => {
+blogsRouter.put('/:id', (request,response) => {
+  const id = request.params.id
+  const{ author, title, likes, url } = request.body
+
+  Bloglist.findByIdAndUpdate(id,{ author,title, likes, url },
+    { new:true, runValidators: true, context: 'query' }
+  )
+    .then(updatedEntry => {
+      response.json(updatedEntry)
+})
+})
+
+blogsRouter.get('/', (request, response) => {
   logger.info('Trying to get collection from MongoDB')
   Bloglist
     .find({})
@@ -21,12 +33,31 @@ blogRouter.get('/', (request, response) => {
     
 })
 
-blogRouter.post('/', (request, response) => {
+
+blogsRouter.get('/:id', (request,response) => {
+  Bloglist.findById(request.params.id).then(entry => {
+    if (entry){
+      response.json(entry)
+    } else{
+      response.status(404).end()
+    }
+  })
+})
+
+blogsRouter.delete('/:id', (request,response) => {
+  const id = request.params.id
+  Bloglist.findByIdAndDelete(id)
+    .then(
+      response.status(204).end()
+    )
+})
+
+blogsRouter.post('/', (request, response) => {
   const body = request.body
   if (body.author === undefined || body.title === undefined){
     return response.status(400).json({ error: 'content missing' })
   }
-  
+
   const blog = new Bloglist(request.body)
 
   blog
@@ -39,5 +70,4 @@ blogRouter.post('/', (request, response) => {
     })
 })
 
-module.exports = blogRouter
-
+module.exports = blogsRouter
