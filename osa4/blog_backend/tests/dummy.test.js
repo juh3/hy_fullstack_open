@@ -147,7 +147,7 @@ describe('pick the favorite blog of the list', () => {
     })
   })
 })
-    
+
 /*describe('see the author that has the most blogs', () => {
   const listWithManyBlogs = [
     {

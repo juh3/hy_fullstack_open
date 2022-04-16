@@ -27,7 +27,7 @@ blogRouter.post('/', (request, response) => {
   blog
     .save()
     .then(result => {
-      response.json(result)
+      response.status(201).json(result)
     })
     .catch((error) => {
       logger.error('save unsuccessful')
