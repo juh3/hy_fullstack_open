@@ -22,6 +22,11 @@ blogRouter.get('/', (request, response) => {
 })
 
 blogRouter.post('/', (request, response) => {
+  const body = request.body
+  if (body.author === undefined || body.title === undefined){
+    return response.status(400).json({ error: 'content missing' })
+  }
+  
   const blog = new Bloglist(request.body)
 
   blog

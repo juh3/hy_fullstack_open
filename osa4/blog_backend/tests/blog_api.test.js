@@ -73,6 +73,18 @@ test('POST adds a blog', async () => {
     expect(addedblog).toContain(0)
   })
 
+  test('POST request with missing title&author ends with 400', async() => {
+    const newBlog = {
+      likes: 3214,
+      url:'http://www.hunajasimaastadista.fi'
+    }
+    
+    await api
+    .post('/api/bloglists')
+    .send(newBlog)
+    .expect(400)
+
+  })
 afterAll(() => {
   mongoose.connection.close()
 })
