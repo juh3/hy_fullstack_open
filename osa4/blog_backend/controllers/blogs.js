@@ -1,6 +1,7 @@
 const blogsRouter = require('express').Router()
 const Bloglist = require('../models/bloglist')
 const logger = require('../utils/logger')
+const User = require('../models/user')
 
 
 blogsRouter.get('/info', (req, res) => {
@@ -28,6 +29,7 @@ blogsRouter.get('/', (request, response) => {
   logger.info('Trying to get collection from MongoDB')
   Bloglist
     .find({})
+    .populate('user', {username: 1, name: 1})
     .then(bloglist => {
       if(bloglist){
       response.json(bloglist)
@@ -56,15 +58,27 @@ blogsRouter.delete('/:id', (request,response) => {
     )
 })
 
-blogsRouter.post('/', (request, response) => {
+blogsRouter.post('/', async (request, response) => {
   const body = request.body
+
+  const user = await User.findById(body.userId)
+
   if (body.author === undefined || body.title === undefined){
     return response.status(400).json({ error: 'content missing' })
   }
 
-  const blog = new Bloglist(request.body)
+  /*const blog = new Bloglist(request.body)*/
+  
+  const blog = new Bloglist({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes,
+    user: user._id
 
-  blog
+  })
+
+  /*blog
     .save()
     .then(result => {
       if(result){
@@ -73,7 +87,14 @@ blogsRouter.post('/', (request, response) => {
     else{
       logger.error('save unsuccessful')
     }
-  })
+  })*/
+  const savedBlog = await blog.save()
+
+  user.blogs = user.blogs.concat(savedBlog._id)
+  await user.save()
+
+  response.json(savedBlog)
+
 })
 
 module.exports = blogsRouter
