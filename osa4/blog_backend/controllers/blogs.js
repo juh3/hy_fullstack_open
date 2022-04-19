@@ -1,8 +1,16 @@
+const jwt = require('jsonwebtoken')
 const blogsRouter = require('express').Router()
 const Bloglist = require('../models/bloglist')
 const logger = require('../utils/logger')
 const User = require('../models/user')
 
+/*const getTokenFrom = (request) => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+    return authorization.substring(7)
+  }
+  return null
+}*/
 
 blogsRouter.get('/info', (req, res) => {
   const date = new Date()
@@ -25,18 +33,16 @@ blogsRouter.put('/:id', (request,response) => {
     })
 })
 
-blogsRouter.get('/', (request, response) => {
-  logger.info('Trying to get collection from MongoDB')
-  Bloglist
+blogsRouter.get('/', async (request, response) => {
+  const blogs = await Bloglist
     .find({})
     .populate('user', {username: 1, name: 1})
-    .then(bloglist => {
-      if(bloglist){
-      response.json(bloglist)
-      }else{
-        logger.error('Cant get collection from MONGODB')
-      }
-    })
+  
+    if (blogs){
+      response.json(blogs)
+    }else{
+      logger.error('Cant get data from MONGODB')
+    }
 })
 
 
@@ -61,11 +67,16 @@ blogsRouter.delete('/:id', (request,response) => {
 blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
-  const user = await User.findById(body.userId)
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
   if (body.author === undefined || body.title === undefined){
     return response.status(400).json({ error: 'content missing' })
   }
+
+  const user = await User.findById(decodedToken.id) 
 
   /*const blog = new Bloglist(request.body)*/
   

@@ -192,6 +192,32 @@ describe('when there is initially one user at db', () => {
     const usernames = usersAtEnd.map(u => u.username)
     expect(usernames).toContain(newUser.username)
   })
+
+  test('creation fails with a password less than 3 letters', async() => {
+    const newUser = {
+      username: 'Maikel',
+      name: 'Maikel Meikäläinen',
+      password: '12'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('creation fails with a username less than 3 letters', async() => {
+    const newUser = {
+      username: 'Ma',
+      name: 'Maikel Meikäläinen',
+      password: '12kfmasi'
+    }
+
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
 })
 
 afterAll(() => {
