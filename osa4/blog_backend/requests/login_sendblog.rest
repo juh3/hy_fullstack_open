@@ -1,10 +1,11 @@
-POST http://localhost:3003/api/bloglists
+POST http://localhost:3001/api/bloglists
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1aDMiLCJpZCI6IjYyNWJmZTc5YmVkNWZiYTNhZTU0MjM2NyIsImlhdCI6MTY1MDM2MzA3M30.agQUriZfpdlNw3wxkjYgzkrwqOfg6Wmwd7eyMIVs8bg
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1sdXVra2FpIiwiaWQiOiI2MjVlOWU4NzZjYjJhZWYyMjY2ZDIzMjgiLCJpYXQiOjE2NTAzOTc5MDMsImV4cCI6MTY1MDQwMTUwM30.htbeMRfjLNS7kZBdDILcKrlNJAyqCztjoVhkJByBEZQ
 
 {
-  "author": "Mikko Mallikas",
-  "title": "How to Mikko in 20th Century",
-  "likes": 324,
-  "url": "http://www.howtomikkoin20.fi"
+    "author": "Kauko Kärhä",
+    "title": "Kaukonäön puolet",
+    "likes": 0,
+    "url": "http://www.kaukonäönKärhä.fi",
+    "id": "625e9e876cb2aef2266d2328"
 }
