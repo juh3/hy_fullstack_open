@@ -1,0 +1,11 @@
+POST http://localhost:3003/api/bloglists
+Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1aDMiLCJpZCI6IjYyNWJmZTc5YmVkNWZiYTNhZTU0MjM2NyIsImlhdCI6MTY1MDQzODc0MSwiZXhwIjoxNjUwNDQyMzQxfQ.uSBGDOWyz0iF3ET0yobVCZ2uJXUtU1IB1Y3bVjgIFGk
+
+{
+    "author": "Maikki ",
+    "title": "Pelottavan Pontso",
+    "likes": 203404,
+    "url": "http://www.pelottavapontsojamaikki.fi",
+    "id": "625bfe79bed5fba3ae542367"
+}
