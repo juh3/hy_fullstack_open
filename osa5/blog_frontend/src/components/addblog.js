@@ -1,36 +1,84 @@
-const FormBlog = (props) => {
+import { useState } from "react"
 
+const FormBlog = ({createBlog, blogs}) => {
+
+    const [newUrl, setUrl] = useState('')
+    const [newLikes, setLikes] = useState('')
+    const [newAuthor, setAuthor] = useState('')
+    const [newTitle, setTitle] = useState('')
+
+    const handleUrlChange = (event) =>{
+        console.log(event.target.value)
+        setUrl(event.target.value)
+    }
+
+    const handleTitleChange = (event) =>{
+        console.log(event.target.value)
+        setTitle(event.target.value)
+    }
+
+    const handleAuthorChange = (event) =>{
+        console.log(event.target.value)
+        setAuthor(event.target.value)
+    }
+    
+    const handleLikesChange = (event) => {
+        console.log(event.target.value)
+        setLikes(event.target.value)
+    }
+
+    const addBlog = (event) => {
+        event.preventDefault()
+        console.log('trying to add a blog')
+        
+        createBlog({
+            author: newAuthor,
+            title: newTitle,
+            likes: newLikes,
+            url: newUrl,
+            id: blogs.length + 1,
+    
+        })
+        
+        setAuthor('')
+        setTitle('')
+        setLikes('')
+        setUrl('')
+    }
+        
+    
 return(
-  <form onSubmit = {props.onSubmit}>
+  <form onSubmit = {addBlog}>
     <div>
+        <h2> Add a blog </h2>
         author: <input
-        value = {props.newAuthor} 
+        value = {newAuthor} 
         placeholder = "input the author"
-        onChange = {props.handleAuthorChange}
+        onChange = {handleAuthorChange}
         />
     </div>
 
     <div>
         title: <input
-        value = {props.newTitle}
+        value = {newTitle}
         placeholder = "input the title of the blog"
-        onChange = {props.handleTitleChange}
+        onChange = {handleTitleChange}
         />
     </div>
 
     <div>
         likes: <input
-        value = {props.newLikes}
+        value = {newLikes}
         placeholder = "input the amount of likes the blog has"
-        onChange = {props.handleLikesChange}
+        onChange = {handleLikesChange}
         />
     </div>
 
     <div>
         url: <input
-        value = {props.newUrl}
+        value = {newUrl}
         placeholder = "input the url of the blog"
-        onChange = {props.handleUrlChange}
+        onChange = {handleUrlChange}
         />
     </div>
     <div>

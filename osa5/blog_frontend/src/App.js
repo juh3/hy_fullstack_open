@@ -1,23 +1,24 @@
 import './App.css'
 import BlogPosts from './components/BlogPosts'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import blogService from './services/blogService'
 import FormBlog from './components/addblog'
 import Signin from './components/Signin'
 import loginService from './services/loginService'
 import Notification from './components/Notification'
-
+import Togglable from './components/Togglable'
 
 const App = () => {
+
+  
+  const [loginVisible, setLoginVisible] = useState(false)
   const [blogs, setBlogs] = useState([])
-  const [newUrl, setUrl] = useState('')
-  const [newLikes, setLikes] = useState('')
-  const [newAuthor, setAuthor] = useState('')
-  const [newTitle, setTitle] = useState('')
+
   const [username, setUsername] = useState('')
   const [password, setPassword]= useState('')
   const [user, setUser] = useState(null)
   const [notification, setNotification] = useState(null)
+  const blogFormRef = useRef()
 
   const hook = () => {
     console.log('effect')
@@ -41,23 +42,6 @@ const App = () => {
   }, [])
   console.log(blogs)
 
-  const handleUrlChange = (event) =>{
-    console.log(event.target.value)
-    setUrl(event.target.value)
-  }
-  const handleTitleChange = (event) =>{
-    console.log(event.target.value)
-    setTitle(event.target.value)
-  }
-  const handleAuthorChange = (event) =>{
-    console.log(event.target.value)
-    setAuthor(event.target.value)
-  }
-  const handleLikesChange = (event) => {
-    console.log("like")
-    console.log(event.target.value)
-    setLikes(event.target.value)
-  }
 
   const handlePasswordChange = (event) => {
     console.log(event.target.value)
@@ -91,43 +75,11 @@ const App = () => {
   }
 
 
-  const addBlog = (event) => {
-    event.preventDefault()
-    console.log('trying to add a blog')
-    
-    const blogObject = {
-      author: newAuthor,
-      title: newTitle,
-      likes: newLikes,
-      url: newUrl,
-      id: blogs.length + 1
-
-    }
-    blogService
-      .create(blogObject)
-      .then(returnedBlog => {
-        setBlogs(blogs.concat(returnedBlog))
-      setNotification({text: 'Blog added succesfully',
-        type: "success"})
-      setTimeout( () => {
-        setNotification(null)
-      }, 5000)
-        
-      })
-      .catch( (error) => {
-        console.log(error.response.data)
-        setNotification({text: error.response.data.error, type: 'failure'})
-      })
-    console.log(`Added ${newAuthor}s blog`)
-    setAuthor('')
-    setTitle('')
-    setLikes('')
-    setUrl('')
-  }
-
+  
   const handleLogout = async (event) => {
     console.log('Trying to logout')
     window.localStorage.clear()
+    setUser(null)
 
   } 
   
@@ -162,38 +114,63 @@ const App = () => {
     }
   }
 
-  return(
-    <div>
-      <Notification message = {notification} />
-      <h1> The BLOG </h1>
-      <p> Welcome to the site that shows the best blogs online!</p>
+  const addBlog = (blogObject) => {
+    blogFormRef.current.toggleVisibility()
 
-      { user === null && <p> Log in below!</p> }
+    blogService
+      .create(blogObject)
+      .then(returnedBlog => {
+      setBlogs(blogs.concat(returnedBlog))
+      setNotification({text: 'Blog added succesfully',
+      type: "success"})
+      setTimeout( () => {
+      setNotification(null)
+      }, 5000)
+      
+      })
+    .catch( (error) => {
+    console.log(error.response.data)
+    setNotification({text: error.response.data.error, type: 'failure'})
+    })
+  }
 
-      { user !== null && <p> {user.name} logged in <button type = "button" value = {user.id} onClick ={handleLogout} > Logout </button> </p>}
-      { user === null &&
+  const loginForm = () => {
+    const hideWhenVisible = { display: loginVisible ? 'none' : '' }
+    const showWhenVisible = { display: loginVisible ? '' : 'none' }
+    return(
+      <div>
+        <div style = {hideWhenVisible}>
+          <button onClick={() => setLoginVisible(true)}> log in </button>
+      </div>
+
+      <div style = {showWhenVisible}>
         <Signin 
           handlePasswordChange = {(event) => handlePasswordChange(event)}
           handleUsernameChange = {(event) => handleUsernameChange(event)}
           handleLogin = {(event) => handleLogin(event)}
           password = {password}
           username = {username}
-        />
-      }
+          />
+        <button onClick={() => setLoginVisible(false)}> cancel </button>
+      </div>
+      </div>
+    )
+  }
 
-      { user !== null &&
-        <FormBlog 
-        handleAuthorChange = {(event) => handleAuthorChange(event)} 
-        handleLikesChange = {(event) => handleLikesChange(event)}
-        handleTitleChange = {(event) => handleTitleChange(event)}
-        handleUrlChange = {(event) => handleUrlChange(event)}
-        onSubmit = {(event) => {addBlog(event)}}
-        author = {newAuthor}
-        likes = {newLikes}
-        title= {newTitle}
-        url = {newUrl}
-        />
-      }
+  return(
+    <div>
+      <Notification message = {notification} />
+      <h1> The BLOG </h1>
+      <p> Welcome to the site that shows the best blogs online!</p>
+      
+      { user === null && <p> {loginForm()} </p> }
+    
+      { user !== null && <p> {user.name} logged in <button type = "button" value = {user.id} onClick ={handleLogout} > Logout </button> </p>}
+
+      { user !== null && <Togglable buttonLabel = "add a new blog" ref = {blogFormRef}>
+        <FormBlog createBlog = {addBlog} blogs = {blogs} />
+      </Togglable>
+      } 
 
       { user !== null &&
       <BlogPosts blogs = {blogs}

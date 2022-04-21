@@ -1,3 +1,4 @@
+
 const Signin = (props) => {
 
 return(
@@ -18,7 +19,7 @@ return(
       />
     </div>
     <div>
-        <button type="submit">log in</button>
+        <button type="submit">login</button>
     </div>
   </form>
 )
