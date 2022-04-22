@@ -203,7 +203,7 @@ const App = () => {
 
     <div>
     <ul className = "first-ul">
-      {blogs.map(blog => (
+      {blogs.sort( (a,b) => b.likes - a.likes).map(blog => (
         <li key = {blog.author}>
         <BlogPosts 
           blog = {blog}
