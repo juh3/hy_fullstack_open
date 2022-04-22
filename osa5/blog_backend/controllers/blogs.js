@@ -12,6 +12,15 @@ router.get('/', async (request, response) => {
   response.json(notes)
 })
 
+router.get('/:id', (request,response) => {
+  Bloglist.findById(request.params.id).then(entry => {
+    if (entry){
+      response.json(entry)
+    } else{
+      response.status(404).end()
+    }
+  })
+})
 router.post('/', async (request, response) => {
   if (!request.user) {
     return response.status(401).json({ text: 'token missing or invalid', type: 'failure' })

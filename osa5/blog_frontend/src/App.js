@@ -135,6 +135,9 @@ const App = () => {
     .catch( (error) => {
     console.log(error.response.data)
     setNotification({text: error.response.data.error, type: 'failure'})
+    setTimeout( () => {
+      setNotification(null)
+      }, 5000)
     })
   }
 
@@ -161,6 +164,27 @@ const App = () => {
     )
   }
 
+  const handleFrontLike = (event) => {
+    console.log('you liked this blog')
+    console.log(event.target.value)
+    const liked_blog_title = event.target.value
+    const liked_blog_info = blogs.find(blog => blog.title === liked_blog_title)
+    console.log(liked_blog_info)
+    const new_likes = liked_blog_info.likes + 1
+    const blogObject = {author: liked_blog_info.author, likes: new_likes, title: liked_blog_info.title, url: liked_blog_info.url, user: liked_blog_info.user.id}
+    blogService
+      .like(liked_blog_info.id, blogObject )
+      .then(returnedBlog => {
+        setBlogs(blogs.map(blog => blog.id !== liked_blog_info.id ? blog :returnedBlog))
+      })
+      setNotification({ text: 'You liked '+ liked_blog_title, type: "success"})
+      setTimeout( () => {
+        setNotification(null)
+      },5000)
+    .catch(error => {
+      setNotification({text:'Encountered an issue, your like wasnt reqistered', type: "failure"})
+    })
+  }
 
   return(
     <div>
@@ -182,7 +206,8 @@ const App = () => {
       {blogs.map(blog => (
         <li key = {blog.author}>
         <BlogPosts 
-          blog = {blog}/>
+          blog = {blog}
+          handleFrontLike = { (event) => handleFrontLike(event)} />
         </li>
       ))}
         </ul>

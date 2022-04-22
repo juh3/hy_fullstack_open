@@ -36,7 +36,7 @@ const BlogPosts = (props) => {
         <button type = "button" onClick = {toggleVisibility}> hide </button>
         <p>{props.blog.url}</p>
         <p> likes: {props.blog.likes}
-        <button type = "button" onClick = {console.log('you liked the blog')}> like </button>        
+        <button type = "button" value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>        
         </p>
         <p> {props.blog.user.name}</p>
       </div>
