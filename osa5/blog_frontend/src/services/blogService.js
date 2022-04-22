@@ -4,7 +4,7 @@ const baseUrl = 'http://localhost:3003/api/bloglists'
 let token = null
 
 const setToken = newToken => {
-  token =  `bearer ${newToken}`
+  token = `bearer ${newToken}`
 }
 
 const getAll = () => {

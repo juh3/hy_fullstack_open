@@ -1,25 +1,46 @@
+import { useState } from "react"
+
+const BlogPosts = (props) => {
+
+  const [visible, setVisible] = useState(false)
+
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '' : 'none' }
+
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+
+  const blogStyle = {
+    paddingTop: 10,
+    paddingLeft: 2,
+    border: 'solid',
+    borderWidth: 1,
+    marginBottom: 5
+  }
 
 
-const BlogPosts = ({blogs, handleDeletion}) => {
-  console.log("Trying to render blogs")
-  console.log(blogs)
-  if (blogs === null){
+  if (props.blog === null){
     return(
       <p> Bloglist is empty</p>
     )
   }
   return (
-    <ul>
-
-      {blogs.map(blog => 
-        <li key = {blog.author}>
-          Blog name: &nbsp; &nbsp; "{blog.title}" &nbsp; by &nbsp; {blog.author}. &nbsp;&nbsp;
-          Upvotes: {blog.likes}&nbsp;&nbsp;&nbsp;  
-          Website:&nbsp; {blog.url} &nbsp; &nbsp;
-          <button type = "button" value = {blog.id} onClick ={handleDeletion} > delete </button>
-        </li>
-        )}
-    </ul>
+    <div style={blogStyle}>
+      <div style = {hideWhenVisible}> 
+        {props.blog.title} {props.blog.author}
+        <button type = "button" onClick = {toggleVisibility}> view </button>        
+      </div>
+      <div style = {showWhenVisible}>
+      {props.blog.title} {props.blog.author}
+        <button type = "button" onClick = {toggleVisibility}> hide </button>
+        <p>{props.blog.url}</p>
+        <p> likes: {props.blog.likes}
+        <button type = "button" onClick = {console.log('you liked the blog')}> like </button>        
+        </p>
+        <p> {props.blog.user.name}</p>
+      </div>
+    </div>
   )
 
 }

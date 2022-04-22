@@ -1,5 +1,4 @@
 import './App.css'
-import BlogPosts from './components/BlogPosts'
 import { useEffect, useState, useRef } from 'react'
 import blogService from './services/blogService'
 import FormBlog from './components/addblog'
@@ -7,6 +6,7 @@ import Signin from './components/Signin'
 import loginService from './services/loginService'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
+import BlogPosts from './components/BlogPosts'
 
 const App = () => {
 
@@ -53,7 +53,7 @@ const App = () => {
     setUsername(event.target.value)
   }
 
-  const handleDeletion = (event) =>{
+  /*const handleDeletion = (event) =>{
     console.log("Pressed  delete button")
     console.log("Entry to be deleted",event.target.value)
     const target_id = event.target.value
@@ -72,7 +72,7 @@ const App = () => {
       
       
     }
-  }
+  }*/
 
 
   
@@ -80,6 +80,10 @@ const App = () => {
     console.log('Trying to logout')
     window.localStorage.clear()
     setUser(null)
+    setNotification( {text: 'Logged out succesfully', type: "success"})
+    setTimeout( () => {
+      setNotification(null)
+    },5000)
 
   } 
   
@@ -157,6 +161,7 @@ const App = () => {
     )
   }
 
+
   return(
     <div>
       <Notification message = {notification} />
@@ -172,13 +177,18 @@ const App = () => {
       </Togglable>
       } 
 
-      { user !== null &&
-      <BlogPosts blogs = {blogs}
-        handleDeletion = {(event) => handleDeletion(event)} 
-      />
-    
-      }
+    <div>
+    <ul className = "first-ul">
+      {blogs.map(blog => (
+        <li key = {blog.author}>
+        <BlogPosts 
+          blog = {blog}/>
+        </li>
+      ))}
+        </ul>
+
     </div>
+  </div>
   )
 
 }
