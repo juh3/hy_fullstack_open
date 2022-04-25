@@ -1,28 +1,36 @@
+import PropTypes from 'prop-types'
 
-const Signin = (props) => {
+const Signin = ({ handleLogin, username, handleUsernameChange, password, handlePasswordChange }) => {
 
-return(
-  <form onSubmit ={props.handleLogin}>
-    <div>
-      username: <input
-        value = {props.username} 
-        placeholder = "input your username"
-        onChange = {props.handleUsernameChange}
+  return(
+    <form onSubmit ={handleLogin}>
+      <div>
+        username: <input
+          value = {username}
+          placeholder = "input your username"
+          onChange = {handleUsernameChange}
         />
-    </div>
+      </div>
 
-    <div>
-    password: <input
-      value = {props.password} 
-      placeholder = "input your password"
-      onChange = {props.handlePasswordChange}
-      />
-    </div>
-    <div>
+      <div>
+        password: <input
+          value = {password}
+          placeholder = "input your password"
+          onChange = {handlePasswordChange}
+        />
+      </div>
+      <div>
         <button type="submit">login</button>
-    </div>
-  </form>
-)
+      </div>
+    </form>
+  )
 }
+export default Signin
 
-export default Signin;
+Signin.propTypes = {
+  handleLogin : PropTypes.func.isRequired,
+  handleUsernameChange: PropTypes.func.isRequired,
+  handlePasswordChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}

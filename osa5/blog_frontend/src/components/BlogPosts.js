@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState } from 'react'
 
 const BlogPosts = (props) => {
 
@@ -28,19 +28,19 @@ const BlogPosts = (props) => {
   }
   return (
     <div style={blogStyle}>
-      <div style = {hideWhenVisible}> 
+      <div style = {hideWhenVisible}>
         {props.blog.title} {props.blog.author}
-        <button type = "button" onClick = {toggleVisibility}> view </button>        
+        <button type = 'button' onClick = {toggleVisibility}> view </button>
       </div>
       <div style = {showWhenVisible}>
-      {props.blog.title} {props.blog.author}
-        <button type = "button" onClick = {toggleVisibility}> hide </button>
+        {props.blog.title} {props.blog.author}
+        <button type = 'button' onClick = {toggleVisibility}> hide </button>
         <p>{props.blog.url}</p>
         <p> likes: {props.blog.likes}
-        <button type = "button" value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>        
+          <button type = "button" value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>
         </p>
         <p> {props.blog.user.name}</p>
-        {props.user.username === props.blog.user.username && <button type = "button" 
+        {props.user.username === props.blog.user.username && <button type = 'button'
           value = {props.blog.id} onClick = {props.handleDeletion}> remove </button>}
       </div>
     </div>
@@ -48,4 +48,4 @@ const BlogPosts = (props) => {
 
 }
 
-export default BlogPosts;
+export default BlogPosts
