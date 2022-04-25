@@ -2,6 +2,7 @@ import { useState } from "react"
 
 const BlogPosts = (props) => {
 
+  console.log(props.blog)
   const [visible, setVisible] = useState(false)
 
   const hideWhenVisible = { display: visible ? 'none' : '' }
@@ -39,6 +40,8 @@ const BlogPosts = (props) => {
         <button type = "button" value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>        
         </p>
         <p> {props.blog.user.name}</p>
+        {props.user.username === props.blog.user.username && <button type = "button" 
+          value = {props.blog.id} onClick = {props.handleDeletion}> remove </button>}
       </div>
     </div>
   )

@@ -21,9 +21,13 @@ const create = async newObject => {
 }
 
 const redact = (id) => {
-  axios
-  .delete(`${baseUrl}/${id}`)
-  
+  console.log(token)
+  const config = {
+    headers: { Authorization: token},
+  }
+  const response = axios
+    .delete(`${baseUrl}/${id}`, config)
+  return response.data
 }
 
 const update = (id, newObject) => {

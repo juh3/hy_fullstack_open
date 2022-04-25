@@ -37,22 +37,26 @@ router.post('/', async (request, response) => {
   response.status(201).json(savedBlog)
 })
 
-router.delete('/:id', async (request, response) => {
-  const blogToDelete = await Bloglist.findById(request.params.id)
-  if (!blogToDelete ) {
+
+router.delete('/:id', async (request,response) => {
+  const id = request.params.id
+  console.log(request)
+  const decodedToken = jwt.verify(request.authorization, process.env.SECRET)
+  /*if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }*/
+
+  const blog = await Bloglist.findById(id)
+  const user = await User.findById(decodedToken.id)
+
+  if ( blog.user.toString() === user._id.toString() ){
+    await Bloglist.findByIdAndRemove(id)
     return response.status(204).end()
+  } 
+  else{
+    return response.status(401).json({error: 'You cant delete a blog you havent posted.'})
   }
 
-  if ( blogToDelete.user && blogToDelete.user.toString() !== request.user.id ) {
-    return response.status(401).json({
-      text: 'only the creator can delete a blog',
-      type: "failure"
-    })
-  }
-
-  await Bloglist.findByIdAndRemove(request.params.id)
-
-  response.status(204).end()
 })
 
 router.put('/:id', async (request, response) => {

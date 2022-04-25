@@ -53,26 +53,32 @@ const App = () => {
     setUsername(event.target.value)
   }
 
-  /*const handleDeletion = (event) =>{
-    console.log("Pressed  delete button")
+  const handleDeletion = async (event) =>{
     console.log("Entry to be deleted",event.target.value)
     const target_id = event.target.value
-
     const blog = blogs.find(n => n.id === target_id)
-    if (window.confirm("Delete " + blog.title + " ?")){
+    console.log(blog)
+    console.log('blogs id', blog.id)
+    if (window.confirm('Remove ' + blog.title + 'by ' + blog.author+ ' ?')){
       blogService
-      .redact(blog.id)
+        .redact(blog.id, user.token)
       const updatedBlogs = blogs.filter(n => n.id !== blog.id)
       setBlogs(updatedBlogs)
       setNotification({text:`Successfully deleted ${blog.title}`,
       type:"success"})
-      setTimeout(() =>{
+      setTimeout( () =>{
         setNotification(null)
       },5000)
-      
-      
+
+      .catch( (error) => {
+        setNotification({ text: error.response.data.error, type: 'failure'})
+        setTimeout( () =>{
+          setNotification(null)
+        },5000)
+      })
     }
-  }*/
+    
+  }
 
 
   
@@ -185,7 +191,6 @@ const App = () => {
       setNotification({text:'Encountered an issue, your like wasnt reqistered', type: "failure"})
     })
   }
-
   return(
     <div>
       <Notification message = {notification} />
@@ -201,18 +206,23 @@ const App = () => {
       </Togglable>
       } 
 
-    <div>
-    <ul className = "first-ul">
-      {blogs.sort( (a,b) => b.likes - a.likes).map(blog => (
-        <li key = {blog.author}>
-        <BlogPosts 
-          blog = {blog}
-          handleFrontLike = { (event) => handleFrontLike(event)} />
-        </li>
-      ))}
-        </ul>
+      {user !== null &&
+      <div>
+      <ul className = "first-ul">
+        {blogs.sort( (a,b) => b.likes - a.likes).map(blog => (
+          <li key = {blog.author}>
+          <BlogPosts 
+            blog = {blog}
+            handleFrontLike = { (event) => handleFrontLike(event)}
+            handleDeletion = { (event) => handleDeletion(event)}
+            user = {user} />
+          </li>
+        ))}
+          </ul>
 
-    </div>
+      </div>
+      }
+
   </div>
   )
 
