@@ -75,6 +75,7 @@ const App = () => {
 
 
   const handleLogout = async (event) => {
+    console.log(event)
     window.localStorage.clear()
     setUser(null)
     setNotification( { text: 'Logged out succesfully', type: 'success' })
@@ -178,6 +179,7 @@ const App = () => {
         },5000)
       })
       .catch( error => {
+        console.log(error)
         setNotification({ text:'Encountered an issue, your like wasnt reqistered', type: 'failure' })
       })
   }

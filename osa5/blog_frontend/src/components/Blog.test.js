@@ -3,6 +3,7 @@ import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import BlogPosts from './BlogPosts'
 import userEvent from '@testing-library/user-event'
+import FormBlog from './addBlog'
 
 describe('BlogPosts Component', () => {
 
@@ -25,7 +26,7 @@ describe('BlogPosts Component', () => {
 
   const handleDeletion = jest.fn().mockName('handleDeletion')
   const handleFrontLike = jest.fn().mockName('handleFrontLike')
-
+  const handleSubmit = jest.fn().mockName('handleSubmit')
   test('default renders only blog title and author', () => {
     console.log(blog)
     const { container } = render(<BlogPosts blog = { blog } user = { user } handleDeletion = {handleDeletion} handleFrontLike = {handleFrontLike} />)
@@ -58,4 +59,5 @@ describe('BlogPosts Component', () => {
     expect(handleFrontLike.mock.calls).toHaveLength(2)
 
   })
+
 })

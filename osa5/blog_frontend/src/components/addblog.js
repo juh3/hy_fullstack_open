@@ -49,6 +49,7 @@ const FormBlog = ({ createBlog, blogs }) => {
       <div>
         <h2> Add a blog </h2>
         author: <input
+          id = 'author'
           value = {newAuthor}
           placeholder = "input the author"
           onChange = {handleAuthorChange}
@@ -57,6 +58,7 @@ const FormBlog = ({ createBlog, blogs }) => {
 
       <div>
         title: <input
+          id = 'title'
           value = {newTitle}
           placeholder = "input the title of the blog"
           onChange = {handleTitleChange}
@@ -65,6 +67,7 @@ const FormBlog = ({ createBlog, blogs }) => {
 
       <div>
         likes: <input
+          id = 'likes'
           value = {newLikes}
           placeholder = "input the amount of likes the blog has"
           onChange = {handleLikesChange}
@@ -73,6 +76,7 @@ const FormBlog = ({ createBlog, blogs }) => {
 
       <div>
         url: <input
+          id = 'url'
           value = {newUrl}
           placeholder = "input the url of the blog"
           onChange = {handleUrlChange}
@@ -80,7 +84,7 @@ const FormBlog = ({ createBlog, blogs }) => {
       </div>
 
       <div>
-        <button type="submit">add</button>
+        <button id = 'add-blog' type="submit">add</button>
       </div>
 
     </form>

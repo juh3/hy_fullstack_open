@@ -6,6 +6,7 @@ const Signin = ({ handleLogin, username, handleUsernameChange, password, handleP
     <form onSubmit ={handleLogin}>
       <div>
         username: <input
+          id = 'username'
           value = {username}
           placeholder = "input your username"
           onChange = {handleUsernameChange}
@@ -14,13 +15,14 @@ const Signin = ({ handleLogin, username, handleUsernameChange, password, handleP
 
       <div>
         password: <input
+          id = 'password'
           value = {password}
           placeholder = "input your password"
           onChange = {handlePasswordChange}
         />
       </div>
       <div>
-        <button type="submit">login</button>
+        <button id = "login-button" type="submit">login</button>
       </div>
     </form>
   )
