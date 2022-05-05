@@ -27,10 +27,10 @@ const BlogPosts = (props) => {
     )
   }
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className = 'blog'>
       <div style = {hideWhenVisible}>
         {props.blog.title} {props.blog.author}
-        <button type = 'button' onClick = {toggleVisibility}> view </button>
+        <button type = 'button' id = 'view-button' onClick = {toggleVisibility}> view </button>
       </div>
       <div style = {showWhenVisible}>
         {props.blog.title} {props.blog.author}

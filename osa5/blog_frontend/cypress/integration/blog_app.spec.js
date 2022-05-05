@@ -95,6 +95,24 @@ describe('Blog ', function() {
         cy.get('#delete-button').click()
         cy.get('.success').contains('Successfully deleted testien taikaa')
       })
+
+      it('likes are in order, from high to low', function() {
+        cy.createBlog({
+          author: 'testi kolme',
+          title: 'testien magiaa',
+          url: 'http://ww.testitaika.fi',
+          likes: 30
+        })
+
+
+        cy.get('[id^=view-button]').should('have.length',2).click({multiple:true})
+
+
+        cy.get('.blog').then(blogs => {
+          cy.wrap(blogs[0]).contains('30')
+          cy.wrap(blogs[1]).contains('23')
+        })
+      })
     })
   })
 })
