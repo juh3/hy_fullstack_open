@@ -77,8 +77,23 @@ describe('Blog ', function() {
 
       it('it can be viewed', function() {
         cy.contains('testien taikaa testi kaks')
-          .contains('view')
+          .contains('view').click()
 
+      })
+
+      it('it can be liked', function() {
+        cy.contains('testien taikaa testi kaks')
+          .contains('view').click()
+        cy.contains('likes: 23')
+        cy.get('#button-like').click()
+        cy.get('.success').contains('You liked testien taikaa')
+      })
+
+      it('it can be removed', function() {
+        cy.contains('testien taikaa testi kaks')
+          .contains('view').click()
+        cy.get('#delete-button').click()
+        cy.get('.success').contains('Successfully deleted testien taikaa')
       })
     })
   })

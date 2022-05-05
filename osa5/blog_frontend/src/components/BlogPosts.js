@@ -37,10 +37,10 @@ const BlogPosts = (props) => {
         <button type = 'button' onClick = {toggleVisibility}> hide </button>
         <p>{props.blog.url}</p>
         <p> likes: {props.blog.likes}
-          <button type = "button" value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>
+          <button type = "button" id = 'button-like' value = {props.blog.title} onClick = {props.handleFrontLike}> like </button>
         </p>
         <p> {props.blog.user.name}</p>
-        {props.user.username === props.blog.user.username && <button type = 'button'
+        {props.user.username === props.blog.user.username && <button type = 'button' id ='delete-button'
           value = {props.blog.id} onClick = {props.handleDeletion}> remove </button>}
       </div>
     </div>

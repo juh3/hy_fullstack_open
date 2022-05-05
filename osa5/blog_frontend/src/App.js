@@ -55,21 +55,23 @@ const App = () => {
     const target_id = event.target.value
     const blog = blogs.find(n => n.id === target_id)
     if (window.confirm('Remove ' + blog.title + 'by ' + blog.author+ ' ?')){
-      blogService
-        .redact(blog.id, user.token)
-      const updatedBlogs = blogs.filter(n => n.id !== blog.id)
-      setBlogs(updatedBlogs)
-      setNotification({ text:`Successfully deleted ${blog.title}`,
-        type:'success' })
-      setTimeout( () => {
-        setNotification(null)
-      },5000)
-        .catch( (error) => {
-          setNotification({ text: error.response.data.error, type: 'failure' })
-          setTimeout( () => {
-            setNotification(null)
-          },5000)
-        })
+      try{
+        blogService
+          .redact(blog.id, user.token)
+        const updatedBlogs = blogs.filter(n => n.id !== blog.id)
+        setBlogs(updatedBlogs)
+        setNotification({ text:`Successfully deleted ${blog.title}`,
+          type:'success' })
+        setTimeout( () => {
+          setNotification(null)
+        },5000)
+
+      }catch(exception){
+        setNotification({ text: 'Remove failed, try again', type: 'failure' })
+        setTimeout( () => {
+          setNotification(null)
+        },5000)
+      }
     }
   }
 
