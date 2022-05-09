@@ -46,7 +46,6 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "VOTE": {
       const anecdoteToVote = state.find(anecdote => anecdote.id === action.data.id)
-      console.log('this is the upvoted anecdote', anecdoteToVote)
       const updatedAnecdote = { ...anecdoteToVote, votes: anecdoteToVote.votes + 1 }
       return(
         state.map( anecdote => 
@@ -56,7 +55,6 @@ const reducer = (state = initialState, action) => {
     }
 
     case "ADD": {
-      console.log('anecdote reducer')
       return [ ...state, action.data]
     }
   }
