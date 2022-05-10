@@ -1,4 +1,4 @@
-import { notInitialized } from "react-redux/es/utils/useSyncExternalStore"
+import { createSlice } from '@reduxjs/toolkit'
 
 const anecdotesAtStart = [
   'If it hurts, do it more often',
@@ -18,8 +18,31 @@ const asObject = (anecdote) => {
     votes: 0
   }
 }
+const initialState = anecdotesAtStart.map(asObject)
 
-export const upvote = (id) => {
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    createAnecdote(state, action) {
+      const content = asObject(action.payload)
+      state.push(
+        content
+      )
+    },
+
+    upvote(state, action) {
+    
+      const id = action.payload
+
+      const anecdoteToVote = state.find(anecdote => anecdote.id === id)
+      const updatedAnecdote = { ...anecdoteToVote, votes: anecdoteToVote.votes + 1 }
+      return state.map( anecdote => 
+        anecdote.id !== id ? anecdote : updatedAnecdote)
+    },
+  }
+})
+/*export const upvote = (id) => {
   return {
     type: 'VOTE',
     data: {
@@ -60,6 +83,6 @@ const reducer = (state = initialState, action) => {
   }
   return state
 }
-
-
-export default reducer
+*/
+export const { createAnecdote, upvote } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
