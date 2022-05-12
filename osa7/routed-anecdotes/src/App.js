@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Routes, Link, Route, useMatch, useNavigate } from 'react-router-dom'
-import message from './App.css'
+import  { useField } from './hooks/customhooks'
+
 const Menu = () => {
   const padding = {
     paddingRight: 20
@@ -65,16 +66,20 @@ const CreateNew = (props) => {
   const [content, setContent] = useState('')
   const [author, setAuthor] = useState('')
   const [info, setInfo] = useState('')
+  const title = useField('title')
+  const writer = useField('author')
+  const url = useField('url')
   const navigate = useNavigate()
 
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = ( e ) => {
+   
     e.preventDefault()
     props.addNew({
-      content,
-      author,
-      info,
+      content: title.value,
+      author: writer.value,
+      info: url.value,
       votes: 0
     })
     navigate('/')
@@ -86,15 +91,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input name='content' value={content} onChange={(e) => setContent(e.target.value)} />
+          <input {...title} />
         </div>
         <div>
           author
-          <input name='author' value={author} onChange={(e) => setAuthor(e.target.value)} />
+          <input {...writer} />
         </div>
         <div>
           url for more info
-          <input name='info' value={info} onChange={(e)=> setInfo(e.target.value)} />
+          <input {...url} />
         </div>
         <button>create</button>
       </form>
@@ -104,6 +109,8 @@ const CreateNew = (props) => {
 }
 
 const App = () => {
+
+
   const [anecdotes, setAnecdotes] = useState([
     {
       content: 'If it hurts, do it more often',
