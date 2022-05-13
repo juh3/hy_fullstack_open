@@ -63,9 +63,7 @@ const Footer = () => (
 )
 
 const CreateNew = (props) => {
-  const [content, setContent] = useState('')
-  const [author, setAuthor] = useState('')
-  const [info, setInfo] = useState('')
+
   const title = useField('title')
   const writer = useField('author')
   const url = useField('url')
@@ -74,7 +72,8 @@ const CreateNew = (props) => {
 
 
   const handleSubmit = ( e ) => {
-   
+    
+    console.log()
     e.preventDefault()
     props.addNew({
       content: title.value,
@@ -85,10 +84,17 @@ const CreateNew = (props) => {
     navigate('/')
   }
 
+  const handleClear = () => {
+    title.onClear()
+    writer.onClear()
+    url.onClear()
+
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form>
         <div>
           content
           <input {...title} />
@@ -101,7 +107,8 @@ const CreateNew = (props) => {
           url for more info
           <input {...url} />
         </div>
-        <button>create</button>
+        <button type = 'submit' onClick = {handleSubmit} >create</button>
+        <button onClick = {handleClear}> reset </button> 
       </form>
     </div>
   )
