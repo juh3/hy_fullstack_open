@@ -22,11 +22,15 @@ const blogSlice = createSlice({
       console.log(action)
       const updatedBlog = action.payload
       return state.map( blog => blog.id !== updatedBlog.id ? blog : updatedBlog)
+    },
+
+    redactBlog(state, action) {
+      return state.filter(n => n.id !== action.payload.id)
     }
   }
 })
 
-export const { setBlogs, appendBlog, updateLike } = blogSlice.actions
+export const { setBlogs, appendBlog, updateLike, redactBlog } = blogSlice.actions
 
 export const initializeBlogs = () => {
   return async dispatch => {
@@ -55,5 +59,19 @@ export const upvote = ( id, blogObject ) => {
       })
   }
 }
+
+export const removeBlog = (blog,user) => {
+  return async dispatch => {
+    try{
+      blogService
+        .redact(blog.id, user.token)
+      dispatch(removeBlog(blog))
+      dispatch(setNotification(`Successfully deleted ${blog.title}`,5))
+    }catch(exception){
+      dispatch(setNotification('Remove failed, try again',5))
+    }
+  }
+}
+
 
 export default blogSlice.reducer

@@ -5,7 +5,6 @@ const Bloglist = () => {
   const blogs = useSelector( state => state.blogs)
   console.log(blogs, 'in bloglist')
   const array_tosort = [ ...blogs]
-
   return(
     <div>
       {array_tosort.sort(( a,b) => b.votes - a.votes).map(blog =>

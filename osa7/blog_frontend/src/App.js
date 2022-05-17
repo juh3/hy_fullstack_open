@@ -6,10 +6,10 @@ import Togglable from './components/Togglable'
 import { initializeBlogs } from './reducers/blogReducer'
 import { getUser } from './reducers/userReducer'
 import { useDispatch, useSelector } from 'react-redux'
-import Bloglist from './components/Bloglist'
 import LoginForm from './components/LoginForm'
 import Title from './components/Title'
 import Logout from './components/Logout'
+import Bloglist from './components/Bloglist'
 
 const App = () => {
   const dispatch = useDispatch()
