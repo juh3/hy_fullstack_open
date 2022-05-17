@@ -1,5 +1,5 @@
 import {  useSelector } from 'react-redux'
-
+import BlogPosts from './BlogPosts'
 
 const Bloglist = () => {
   const blogs = useSelector( state => state.blogs)
@@ -10,9 +10,9 @@ const Bloglist = () => {
     <div>
       {array_tosort.sort(( a,b) => b.votes - a.votes).map(blog =>
         <div key = {blog.id}>
-          <div>
-            {blog.title} {blog.author}
-          </div>
+          <BlogPosts
+            blog = {blog}
+          />
         </div>
       )}
     </div>

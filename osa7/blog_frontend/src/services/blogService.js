@@ -30,8 +30,9 @@ const redact = (id) => {
   return response.data
 }
 
-const update = (id, newObject) => {
-  const request = axios.put(`${ baseUrl } /${id}`, newObject)
+const update = async (id, newObject) => {
+  console.log(newObject, 'this is the object passed to the backend in frontend')
+  const request = await axios.put(`${ baseUrl } /${id}`, newObject)
   return request.then(response => response.data)
 }
 

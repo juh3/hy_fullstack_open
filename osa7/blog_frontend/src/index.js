@@ -13,7 +13,7 @@ const store = configureStore({
     users: userReducer
   }
 })
-
+  
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store = {store}>
     <App />
