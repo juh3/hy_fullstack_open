@@ -1,18 +1,13 @@
 import { useState } from 'react'
-import { setNotification } from '../reducers/notificationReducer'
 import Signin from './Signin'
-import loginService from '../services/loginService'
-import blogService from '../services/blogService'
 import { useDispatch } from 'react-redux'
-
+import { initializeUser } from '../reducers/userReducer'
 const LoginForm = () => {
+  const dispatch = useDispatch()
 
   const [loginVisible, setLoginVisible] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword]= useState('')
-  const [user, setUser] = useState(null)
-  console.log(user)
-  const dispatch = useDispatch()
 
   const handlePasswordChange = (event) => {
     console.log(event.target.value)
@@ -27,26 +22,9 @@ const LoginForm = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-
-    try {
-      const user = await loginService.login({
-        username, password,
-      })
-
-      window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(user)
-      )
-
-      blogService.setToken(user.token)
-      setUser(user)
-      dispatch(setNotification('Login successful',5))
-
-
-      setUsername('')
-      setPassword('')
-    } catch (exception) {
-      dispatch(setNotification('wrong credentials',5))
-    }
+    dispatch(initializeUser(username, password))
+    setUsername('')
+    setPassword('')
   }
 
   const hideWhenVisible = { display: loginVisible ? 'none' : '' }

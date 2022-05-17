@@ -1,43 +1,29 @@
 import './App.css'
-import { useEffect, useState, useRef } from 'react'
-import blogService from './services/blogService'
+import { useEffect , useRef } from 'react'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable'
-import BlogPosts from './components/BlogPosts'
 import { initializeBlogs } from './reducers/blogReducer'
-import { useDispatch } from 'react-redux'
+import { getUser } from './reducers/userReducer'
+import { useDispatch, useSelector } from 'react-redux'
 import Bloglist from './components/Bloglist'
-import { setNotification } from './reducers/notificationReducer'
 import LoginForm from './components/LoginForm'
 import Title from './components/Title'
 import Logout from './components/Logout'
+
 const App = () => {
   const dispatch = useDispatch()
-
-  const [blogs, setBlogs] = useState([])
-
-  const [user, setUser] = useState(null)
   const blogFormRef = useRef()
-
+  const user = useSelector(state => state.users)
   useEffect(() => {
     dispatch(initializeBlogs())
   }, [dispatch])
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      blogService.setToken(user.token)
-    }
+  useEffect( () => {
+    dispatch(getUser())
   }, [])
-  console.log(blogs)
 
-
-
-
-  const handleDeletion = async (event) => {
+  /*const handleDeletion = async (event) => {
     const target_id = event.target.value
     const blog = blogs.find(n => n.id === target_id)
     if (window.confirm('Remove ' + blog.title + 'by ' + blog.author+ ' ?')){
@@ -59,7 +45,7 @@ const App = () => {
         },5000)
       }
     }
-  }
+  }*/
 
 
   /*const addBlog = (blogObject) => {
@@ -86,7 +72,7 @@ const App = () => {
 
 
 
-  const handleFrontLike = (event) => {
+  /*const handleFrontLike = (event) => {
     console.log('you liked this blog')
     console.log(event.target.value)
     const liked_blog_title = event.target.value
@@ -107,7 +93,7 @@ const App = () => {
         console.log(error)
         setNotification({ text:'Encountered an issue, your like wasnt reqistered', type: 'failure' })
       })
-  }
+  }*/
 
   return(
     <div>
@@ -123,7 +109,7 @@ const App = () => {
       }
 
       {user !== null && <Bloglist/> }
-      <div>
+      {/*<div>
         <ul className = "first-ul">
           {blogs.sort( (a,b) => b.likes - a.likes).map(blog => (
             <li key = {blog.author}>
@@ -136,7 +122,7 @@ const App = () => {
           ))}
         </ul>
 
-      </div>
+          </div>*/}
 
     </div>
   )

@@ -1,15 +1,12 @@
-import { setNotification } from '../reducers/notificationReducer'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { logoutuser } from '../reducers/userReducer'
 
 const Logout = () => {
-
+  const user = useSelector( state => state.users)
   const dispatch = useDispatch()
   const handleLogout = async (event) => {
     console.log(event)
-    window.localStorage.clear()
-    setUser(null)
-    dispatch(setNotification('Logged out succesfully', 5))
-
+    dispatch(logoutuser())
   }
 
   return(
