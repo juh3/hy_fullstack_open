@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 const FormBlog = () => {
   const dispatch = useDispatch()
-
+  const user = useSelector( state => state.users)
   const [newUrl, setUrl] = useState('')
   const [newLikes, setLikes] = useState('')
   const [newAuthor, setAuthor] = useState('')
@@ -38,6 +38,8 @@ const FormBlog = () => {
       title: newTitle,
       likes: newLikes,
       url: newUrl,
+      user: { username : user.username,
+        name: user.name }
     }))
     dispatch(setNotification(`Added ${newTitle} to the blogs`,5))
 

@@ -21,7 +21,6 @@ const create = async newObject => {
 }
 
 const redact = (id) => {
-  console.log(token)
   const config = {
     headers: { Authorization: token },
   }
@@ -31,7 +30,6 @@ const redact = (id) => {
 }
 
 const update = async (id, newObject) => {
-  console.log(newObject, 'this is the object passed to the backend in frontend')
   const request = await axios.put(`${ baseUrl } /${id}`, newObject)
   return request.then(response => response.data)
 }

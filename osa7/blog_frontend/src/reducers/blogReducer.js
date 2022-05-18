@@ -8,7 +8,6 @@ const blogSlice = createSlice({
 
   reducers: {
     setBlogs( state, action) {
-      console.log(action)
       return action.payload
     },
 
@@ -21,6 +20,7 @@ const blogSlice = createSlice({
     updateLike(state, action) {
       console.log(action)
       const updatedBlog = action.payload
+      console.log(action.payload)
       return state.map( blog => blog.id !== updatedBlog.id ? blog : updatedBlog)
     },
 
@@ -36,13 +36,13 @@ export const initializeBlogs = () => {
   return async dispatch => {
     const blogs = await blogService.getAll()
     dispatch(setBlogs(blogs))
-    console.log(blogs)
   }
 }
 
 export const createBlog = (content) => {
   return async dispatch => {
     const newBlog = await blogService.create(content)
+    console.log(content)
     dispatch(appendBlog(newBlog))
   }
 }
@@ -66,6 +66,7 @@ export const removeBlog = (blog,user) => {
       blogService
         .redact(blog.id, user.token)
       dispatch(removeBlog(blog))
+      dispatch(initializeBlogs())
       dispatch(setNotification(`Successfully deleted ${blog.title}`,5))
     }catch(exception){
       dispatch(setNotification('Remove failed, try again',5))

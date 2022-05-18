@@ -10,26 +10,14 @@ import LoginForm from './components/LoginForm'
 import Title from './components/Title'
 import Logout from './components/Logout'
 import Bloglist from './components/Bloglist'
+import { Routes, Route } from 'react-router-dom'
+import Users from './components/Users'
+import { initializeUserlist } from './reducers/allUsersReducer'
+import SingleUser from './components/SingleUser'
 
-const App = () => {
-  const dispatch = useDispatch()
-  const blogFormRef = useRef()
-  const user = useSelector(state => state.users)
-  useEffect(() => {
-    dispatch(initializeBlogs())
-  }, [dispatch])
-
-  useEffect( () => {
-    dispatch(getUser())
-  }, [])
-
+const Landingpage = ({ user, blogFormRef }) => {
   return(
     <div>
-      <Notification />
-      <Title />
-      { user === null && <LoginForm/>}
-
-      { user !== null && <Logout/>}
 
       { user !== null && <Togglable buttonLabel = "add a new blog" ref = {blogFormRef}>
         <BlogForm />
@@ -37,7 +25,41 @@ const App = () => {
       }
 
       {user !== null && <Bloglist/>}
+    </div>
+  )
+}
 
+const UserView = () => {
+  return(
+    <div>
+      <Users/>
+    </div>)
+}
+
+
+const App = () => {
+  const dispatch = useDispatch()
+  const blogFormRef = useRef()
+  const user = useSelector(state => state.users)
+
+  useEffect(() => {
+    dispatch(initializeBlogs())
+    dispatch(getUser())
+    dispatch(initializeUserlist())
+  }, [dispatch])
+
+  return(
+    <div>
+      <Notification/>
+      <Title/>
+      { user === null && <LoginForm/>}
+
+      { user !== null && <Logout/>}
+      <Routes>
+        <Route path = '/' element = { <Landingpage user = {user} blogFormRef = {blogFormRef} />} />
+        <Route path = '/users' element = { <UserView/> } />
+        <Route path = '/users/:id' element = { <SingleUser />} />
+      </Routes>
     </div>
   )
 
