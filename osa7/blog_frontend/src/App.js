@@ -14,6 +14,7 @@ import { Routes, Route } from 'react-router-dom'
 import Users from './components/Users'
 import { initializeUserlist } from './reducers/allUsersReducer'
 import SingleUser from './components/SingleUser'
+import SingleBlog from './components/SingleBlog'
 
 const Landingpage = ({ user, blogFormRef }) => {
   return(
@@ -35,6 +36,10 @@ const UserView = () => {
       <Users/>
     </div>)
 }
+
+const BlogView = () => (
+  <SingleBlog/>
+)
 
 
 const App = () => {
@@ -59,6 +64,7 @@ const App = () => {
         <Route path = '/' element = { <Landingpage user = {user} blogFormRef = {blogFormRef} />} />
         <Route path = '/users' element = { <UserView/> } />
         <Route path = '/users/:id' element = { <SingleUser />} />
+        <Route path = '/blogs/:id' element = { <BlogView />} />
       </Routes>
     </div>
   )
