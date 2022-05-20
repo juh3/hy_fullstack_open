@@ -17,7 +17,8 @@ const schema = mongoose.Schema({
   },
   comments: [
     {
-    type: [{type: String}]
+    type: Array,
+    default: []
 }]
 })
 

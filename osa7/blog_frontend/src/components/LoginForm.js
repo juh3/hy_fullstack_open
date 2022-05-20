@@ -2,8 +2,10 @@ import { useState } from 'react'
 import Signin from './Signin'
 import { useDispatch } from 'react-redux'
 import { initializeUser } from '../reducers/userReducer'
+import { useNavigate } from 'react-router-dom'
 const LoginForm = () => {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   const [loginVisible, setLoginVisible] = useState(false)
   const [username, setUsername] = useState('')
@@ -20,11 +22,12 @@ const LoginForm = () => {
 
   }
 
-  const handleLogin = async (event) => {
+  const handleLogin = (event) => {
     event.preventDefault()
     dispatch(initializeUser(username, password))
     setUsername('')
     setPassword('')
+    navigate('/')
   }
 
   const hideWhenVisible = { display: loginVisible ? 'none' : '' }

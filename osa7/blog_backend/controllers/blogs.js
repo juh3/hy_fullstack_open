@@ -17,6 +17,7 @@ router.get('/', async (request, response) => {
   const notes = await Bloglist
     .find({})
     .populate('user', { username: 1, name: 1 })
+    .populate('comments', {content:1})
 
   response.json(notes)
 })
@@ -76,7 +77,7 @@ router.put('/:id', async (request, response) => {
   console.log(blog, 'this is the blog passed to the backend')
   const updatedBlog = await Bloglist
     .findByIdAndUpdate(
-      request.params.id, 
+      id, 
       blog, 
       { new: true, runValidators: true, context: 'query' }
     )
@@ -86,16 +87,13 @@ router.put('/:id', async (request, response) => {
 
 router.post('/:id/comments', async(request, response) => {
   const { id } = request.params
-  const comment = request.body 
-
-  const updatedBlog = await Bloglist.findById(id)
-
-  const updatedComments = updatedBlog.comments.concat(comment)
-  const savedBlog = await Bloglist.findByIdAndUpdate(id,
-    { ...updatedBlog, comments: updatedComments},
-    { new: true, runValidators: true, context: 'query' }
-    )
-  response.json(savedBlog)
+  const comment = request.body.comment
+  console.log('backend post /id/comments', id, comment)
+  const blog = await Bloglist.findById(id)
+  blog.comments = blog.comments.concat(comment)
+  blog.save()
+  console.log(blog,'blog updated backend')
+  response.json(blog)
 })
 
 router.get('/:id/comments', async(request,response) => {
