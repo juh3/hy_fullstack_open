@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const jwt = require('jsonwebtoken')
+const bloglist = require('../models/bloglist')
 
 const Bloglist = require('../models/bloglist')
 const User = require('../models/user')
@@ -15,7 +16,7 @@ const getTokenFrom = request => {
 router.get('/', async (request, response) => {
   const notes = await Bloglist
     .find({})
-    .find({}).populate('user', { username: 1, name: 1 })
+    .populate('user', { username: 1, name: 1 })
 
   response.json(notes)
 })
@@ -35,7 +36,7 @@ router.post('/', async (request, response) => {
   }
 
   const user = request.user
-  const blog = new Bloglist({ ...request.body, user: user.id })
+  const blog = new Bloglist({ ...request.body, user: user.id })   
 
   const savedBlog = await blog.save()
 
@@ -71,15 +72,39 @@ router.delete('/:id', async (request,response) => {
 
 router.put('/:id', async (request, response) => {
   const blog = request.body
-
+  const { id } = request.params
+  console.log(blog, 'this is the blog passed to the backend')
   const updatedBlog = await Bloglist
     .findByIdAndUpdate(
       request.params.id, 
       blog, 
       { new: true, runValidators: true, context: 'query' }
     )
-      
+  console.log(updatedBlog, 'this is the updatedblog in backend')
   response.json(updatedBlog)
 })
 
+router.post('/:id/comments', async(request, response) => {
+  const { id } = request.params
+  const comment = request.body 
+
+  const updatedBlog = await Bloglist.findById(id)
+
+  const updatedComments = updatedBlog.comments.concat(comment)
+  const savedBlog = await Bloglist.findByIdAndUpdate(id,
+    { ...updatedBlog, comments: updatedComments},
+    { new: true, runValidators: true, context: 'query' }
+    )
+  response.json(savedBlog)
+})
+
+router.get('/:id/comments', async(request,response) => {
+  Bloglist.findById(request.params.id).then(entry => {
+    if (entry.comments){
+      response.json(entry.comments)
+    } else{
+      response('<p>You are in the comments page</p>')
+    }
+  })
+})
 module.exports = router
