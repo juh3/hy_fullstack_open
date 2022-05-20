@@ -66,10 +66,6 @@ blogsRouter.delete('/:id', async (request,response) => {
     return response.status(401).json({error: 'You cant delete a blog you havent posted.'})
   }
 
-  /*Bloglist.findByIdAndDelete(id)
-    .then(
-      response.status(204).end()
-    )*/
 })
 
 blogsRouter.post('/', async (request, response) => {
@@ -95,17 +91,6 @@ blogsRouter.post('/', async (request, response) => {
     user: user._id
 
   })
-
-  /*blog
-    .save()
-    .then(result => {
-      if(result){
-      response.status(201).json(result)
-    }
-    else{
-      logger.error('save unsuccessful')
-    }
-  })*/
   const savedBlog = await blog.save()
 
   user.blogs = user.blogs.concat(savedBlog._id)

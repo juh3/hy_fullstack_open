@@ -1,26 +1,18 @@
 
 const Signin = (props) => {
   return(
-    <form onSubmit ={props.onSignin}>
+    <form onSubmit ={props.signuser}>
       <div>
       username: <input
-        value = {props.newUsername} 
+        value = {props.username} 
         placeholder = "input your username"
         onChange = {props.handleUsernameChange}
         />
       </div>
 
       <div>
-      name: <input
-        value = {props.newName} 
-        placeholder = "input your name"
-        onChange = {props.handleNameChange}
-        />
-      </div>
-
-      <div>
       password: <input
-        value = {props.newPassword} 
+        value = {props.password} 
         placeholder = "input your password"
         onChange = {props.handlePasswordChange}
         />
