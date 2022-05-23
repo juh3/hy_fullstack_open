@@ -13,13 +13,12 @@ const store = configureStore({
     blogs: blogReducer,
     notifications: notificationReducer,
     users: userReducer,
-    allUsers: allUsersReducer
-  }
+    allUsers: allUsersReducer,
+  },
 })
-  
-ReactDOM.createRoot(document.getElementById('root')).render(
 
-  <Provider store = {store}>
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
     <Router>
       <App />
     </Router>

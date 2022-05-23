@@ -9,7 +9,7 @@ const LoginForm = () => {
 
   const [loginVisible, setLoginVisible] = useState(false)
   const [username, setUsername] = useState('')
-  const [password, setPassword]= useState('')
+  const [password, setPassword] = useState('')
 
   const handlePasswordChange = (event) => {
     console.log(event.target.value)
@@ -19,7 +19,6 @@ const LoginForm = () => {
   const handleUsernameChange = (event) => {
     console.log(event.target.value)
     setUsername(event.target.value)
-
   }
 
   const handleLogin = (event) => {
@@ -32,21 +31,31 @@ const LoginForm = () => {
 
   const hideWhenVisible = { display: loginVisible ? 'none' : '' }
   const showWhenVisible = { display: loginVisible ? '' : 'none' }
-  return(
+  return (
     <div>
-      <div style = {hideWhenVisible}>
-        <button onClick={() => setLoginVisible(true)}> log in </button>
+      <div style={hideWhenVisible}>
+        <button onClick={() => setLoginVisible(true)}>
+          {' '}
+          log in{' '}
+        </button>
       </div>
 
-      <div style = {showWhenVisible}>
+      <div style={showWhenVisible}>
         <Signin
-          handlePasswordChange = {(event) => handlePasswordChange(event)}
-          handleUsernameChange = {(event) => handleUsernameChange(event)}
-          handleLogin = {(event) => handleLogin(event)}
-          password = {password}
-          username = {username}
+          handlePasswordChange={(event) =>
+            handlePasswordChange(event)
+          }
+          handleUsernameChange={(event) =>
+            handleUsernameChange(event)
+          }
+          handleLogin={(event) => handleLogin(event)}
+          password={password}
+          username={username}
         />
-        <button onClick={() => setLoginVisible(false)}> cancel </button>
+        <button onClick={() => setLoginVisible(false)}>
+          {' '}
+          cancel{' '}
+        </button>
       </div>
     </div>
   )

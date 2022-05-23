@@ -7,7 +7,7 @@ import Stack from '@mui/material/Stack'
 
 const FormBlog = () => {
   const dispatch = useDispatch()
-  const user = useSelector( state => state.users)
+  const user = useSelector((state) => state.users)
   const [newUrl, setUrl] = useState('')
   const [newLikes, setLikes] = useState('')
   const [newAuthor, setAuthor] = useState('')
@@ -36,15 +36,16 @@ const FormBlog = () => {
   const addBlog = (event) => {
     event.preventDefault()
     console.log('trying to add a blog')
-    dispatch(createBlog({
-      author: newAuthor,
-      title: newTitle,
-      likes: newLikes,
-      url: newUrl,
-      user: { username : user.username,
-        name: user.name }
-    }))
-    dispatch(setNotification(`Added ${newTitle} to the blogs`,5))
+    dispatch(
+      createBlog({
+        author: newAuthor,
+        title: newTitle,
+        likes: newLikes,
+        url: newUrl,
+        user: { username: user.username, name: user.name },
+      })
+    )
+    dispatch(setNotification(`Added ${newTitle} to the blogs`, 5))
 
     setAuthor('')
     setTitle('')
@@ -52,51 +53,56 @@ const FormBlog = () => {
     setUrl('')
   }
 
-  return(
-    <form onSubmit = {addBlog}>
+  return (
+    <form onSubmit={addBlog}>
       <div>
         <h2> Add a blog </h2>
-        author: <input
-          id = 'author'
-          value = {newAuthor}
-          placeholder = "input the author"
-          onChange = {handleAuthorChange}
+        author:{' '}
+        <input
+          id="author"
+          value={newAuthor}
+          placeholder="input the author"
+          onChange={handleAuthorChange}
         />
       </div>
 
       <div>
-        title: <input
-          id = 'title'
-          value = {newTitle}
-          placeholder = "input the title of the blog"
-          onChange = {handleTitleChange}
+        title:{' '}
+        <input
+          id="title"
+          value={newTitle}
+          placeholder="input the title of the blog"
+          onChange={handleTitleChange}
         />
       </div>
 
       <div>
-        likes: <input
-          id = 'likes'
-          value = {newLikes}
-          placeholder = "input the amount of likes the blog has"
-          onChange = {handleLikesChange}
+        likes:{' '}
+        <input
+          id="likes"
+          value={newLikes}
+          placeholder="input the amount of likes the blog has"
+          onChange={handleLikesChange}
         />
       </div>
 
       <div>
-        url: <input
-          id = 'url'
-          value = {newUrl}
-          placeholder = "input the url of the blog"
-          onChange = {handleUrlChange}
+        url:{' '}
+        <input
+          id="url"
+          value={newUrl}
+          placeholder="input the url of the blog"
+          onChange={handleUrlChange}
         />
       </div>
 
       <div>
-        <Stack spacing = { 2 } direction ="row">
-          <Button variant = 'contained' id = 'add-blog' type="submit">add</Button>
+        <Stack spacing={2} direction="row">
+          <Button variant="contained" id="add-blog" type="submit">
+            add
+          </Button>
         </Stack>
       </div>
-
     </form>
   )
 }

@@ -1,5 +1,3 @@
-
-
 const Title = () => (
   <div>
     <h1> The BLOG </h1>
