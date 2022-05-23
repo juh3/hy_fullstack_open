@@ -14,7 +14,12 @@ import { initializeUserlist } from './reducers/allUsersReducer'
 import SingleUser from './components/SingleUser'
 import SingleBlog from './components/SingleBlog'
 import LoginForm from './components/LoginForm'
-
+import AppBar from '@mui/material/AppBar'
+import Box from '@mui/material/Box'
+import Toolbar from '@mui/material/Toolbar'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
 const Landingpage = ({ user, blogFormRef }) => {
   return(
     <div>
@@ -49,7 +54,7 @@ const App = () => {
   }
 
   const padding = {
-    padding: 5
+    padding: 80
   }
 
   const content = () => {
@@ -78,30 +83,51 @@ const App = () => {
   }
 
   const Navigation = () => {
-    const styled_nav = {
+    /*const styled_nav = {
       border: 'solid',
       padding: 10,
       borderWidth: 1
-    }
+    }*/
 
 
     return(
       <div>
-        <div style = {styled_nav}>
-          <a href="" onClick={toPage('home')} style={padding}>
-            home
-          </a>
-          <a href="" onClick={toPage('blogs')} style={padding}>
-            blogs
-          </a>
-          <a href="" onClick={toPage('users')} style={padding}>
-            users
-          </a>
-          {user
-            ? <em>{user.name} logged in <button onClick={handleLogout}> Logout </button></em>
-            : <Link style={padding} to="/login">login</Link>
-          }
+        <div className='app__menu'>
+          <Box sx={{ flexGrow: 1,
+            minwidth: 1000,
+            boxShadow: 1,
+            background: '#fff',
+            border: 'solid',
+            borderWidth: 1,
+            padding: 0.2, alignContent: 'center', justifyContent: 'center' }}>
+            <AppBar style={{ background: '#fff', alignItems: 'center', justifyContent: 'center' }} position="static">
+              <Toolbar>
+                <Typography><a className = 'a' href="" onClick={toPage('home')} style={padding}>
+              home
+                </a>
+                </Typography>
+                <Typography><a className = 'a' href="" onClick={toPage('blogs')} style={padding}>
+              blogs
+                </a>
+                </Typography>
+                <Typography><a className = 'a' href="" onClick={toPage('users')} style={padding}>
+              users
+                </a>
+                </Typography>
+                {user
+                  ? <div style={{ display: 'flex', justifyContent: 'space-between', padding: '30' }}>
+                    <em className='loggedin'>{user.name} logged in</em>
+                    <Stack spacing = { 2 } direction = "row">
+                      <Button variant = "contained" onClick={handleLogout}> Logout </Button>
+                    </Stack>
+                  </div>
+                  : <Link style={padding} to="/login">login</Link>
+                }
+              </Toolbar>
+            </AppBar>
+          </Box>
         </div>
+
         {content()}
       </div>
     )

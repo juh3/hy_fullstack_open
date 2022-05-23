@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import Button from '@mui/material/Button'
+import Stack from '@mui/material/Stack'
+
 const FormBlog = () => {
   const dispatch = useDispatch()
   const user = useSelector( state => state.users)
@@ -89,7 +92,9 @@ const FormBlog = () => {
       </div>
 
       <div>
-        <button id = 'add-blog' type="submit">add</button>
+        <Stack spacing = { 2 } direction ="row">
+          <Button variant = 'contained' id = 'add-blog' type="submit">add</Button>
+        </Stack>
       </div>
 
     </form>

@@ -38,3 +38,24 @@ h1 {
   padding:60px;
   margin-top: 5px;
 }
+
+.app__menu{
+  text-decoration: none;
+}
+
+.a{
+  text-decoration: none;
+  font-size: 2.5em;   
+}
+
+.a:hover{
+  transition-timing-function: ease-in;
+  transition: 0.3s;
+  text-decoration: underline;
+  color: rgb(244, 244, 244);
+}
+
+.loggedin{
+  color: rgb(0,0,0);
+  text-decoration: none;
+}
