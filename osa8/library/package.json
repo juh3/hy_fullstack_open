@@ -1,0 +1,15 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Juha Anttila",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-server": "^3.8.1",
+    "gql": "^1.1.2"
+  }
+}
