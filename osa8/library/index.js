@@ -95,24 +95,26 @@ const resolvers = {
 
   Mutation: {
     addBook: async (root, args) => {
-      const authorObject = new Author({
+      const authorindatabase = await Author.findOne({
         name: args.author,
-        born: null,
       })
-      /*if (authors.includes(args.author)) {
-        books = books.concat(bookObject)
-        return bookObject
+      if (authorindatabase) {
+        const bookObject = new Book({
+          ...args,
+          author: authorindatabase,
+        })
+        return bookObject.save()
       } else {
-        const authorObject = {
+        const authorObject = new Author({
           name: args.author,
           born: null,
-          id: uuid(),
-        }*/
-      await authorObject.save()
-      const newAuthor = await Author.findOne({ name: args.author })
-      const bookObject = new Book({ ...args, author: newAuthor })
+        })
+        await authorObject.save()
+        const newAuthor = await Author.findOne({ name: args.author })
+        const bookObject = new Book({ ...args, author: newAuthor })
 
-      return bookObject.save()
+        return bookObject.save()
+      }
     },
 
     editAuthor: async (root, args) => {
