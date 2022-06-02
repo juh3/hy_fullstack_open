@@ -96,12 +96,11 @@ const resolvers = {
             })
           }
         }
-
-        if (!args.genre) {
-          return await Book.find({})
-        } else {
-          return Book.find({ genres: { $in: [args.genre] } })
-        }
+      }
+      if (!args.genre) {
+        return await Book.find({}).populate('author')
+      } else {
+        return Book.find({ genres: { $in: [args.genre] } })
       }
     },
 
@@ -144,7 +143,6 @@ const resolvers = {
       } else {
         const authorObject = new Author({
           name: args.author,
-          born: null,
         })
         await authorObject.save()
         const newAuthor = await Author.findOne({ name: args.author })

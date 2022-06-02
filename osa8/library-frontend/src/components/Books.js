@@ -11,12 +11,12 @@ const Books = (props) => {
     return null
   }
 
-  const books = result.data.allBooks
-
   const padding = {
     padding: 5,
   }
 
+  const books = result.data.allBooks
+  console.log(books)
   return (
     <div>
       <h2>books</h2>
@@ -31,7 +31,7 @@ const Books = (props) => {
           {books.map((a) => (
             <tr key={a.title}>
               <td>{a.title}</td>
-              <td style={padding}>{a.author}</td>
+              <td style={padding}>{a.author.name}</td>
               <td style={padding}>{a.published}</td>
             </tr>
           ))}
