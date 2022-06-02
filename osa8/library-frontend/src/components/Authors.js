@@ -5,7 +5,9 @@ const Authors = (props) => {
   const result = useQuery(ALL_AUTHORS)
   const [name, setName] = useState('')
   let [birthyear, setBirthyear] = useState('')
-  const [ editEntry ] = useMutation(EDIT_AUTHOR, { refetchQueries: [{ query: ALL_AUTHORS } ]})
+  const [editEntry] = useMutation(EDIT_AUTHOR, {
+    refetchQueries: [{ query: ALL_AUTHORS }],
+  })
 
   if (result.loading) {
     return <div> loading... </div>
@@ -19,7 +21,7 @@ const Authors = (props) => {
     event.preventDefault()
     let setBornTo = parseInt(birthyear)
     console.log(name, setBornTo)
-    editEntry( { variables: { name, setBornTo } })
+    editEntry({ variables: { name, setBornTo } })
 
     setName('')
     setBirthyear('')
@@ -49,28 +51,32 @@ const Authors = (props) => {
       </table>
 
       <div>
-      <h2> Set birthyear</h2>
+        <h2> Set birthyear</h2>
 
-      <div style={ { alignItems: "center"}}>
-        <form onSubmit = { handleSubmit}>
-          <select style = { { width: "50%"}} value = { name} onChange = { ({ target }) => setName(target.value)}>
-            {authors.map( author  => (
-              <option key={author.born}> {author.name}</option>
-            ))}
-          </select>
+        <div style={{ alignItems: 'center' }}>
+          <form onSubmit={handleSubmit}>
+            <select
+              style={{ width: '50%' }}
+              value={name}
+              onChange={({ target }) => setName(target.value)}
+            >
+              {authors.map((author) => (
+                <option key={author.id}> {author.name}</option>
+              ))}
+            </select>
 
-          <div>
-            born
-            <input
-              value = {birthyear}
-              onChange = { ({ target }) => setBirthyear(target.value)}>
-            </input>
-          </div>
-          <button type = "submit"> update Author</button>
-        </form>
+            <div>
+              born
+              <input
+                value={birthyear}
+                onChange={({ target }) => setBirthyear(target.value)}
+              ></input>
+            </div>
+            <button type="submit"> update Author</button>
+          </form>
+        </div>
       </div>
     </div>
-  </div>
   )
 }
 
