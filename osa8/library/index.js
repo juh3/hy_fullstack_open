@@ -66,6 +66,8 @@ const typeDefs = gql`
 
     editAuthor(name: String!, setBornTo: Int!): Author
 
+    editGenre(username: String!, genre: String!): User!
+
     createUser(username: String!): User
     login(username: String!, password: String!): Token
   }
@@ -191,6 +193,18 @@ const resolvers = {
       }
 
       return { value: jwt.sign(userForToken, JWT_SECRET) }
+    },
+
+    editGenre: async (root, args) => {
+      const user = await User.findOne({ username: args.username })
+      user.favouriteGenre = args.genre
+      try {
+        return user.save()
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
     },
   },
 }

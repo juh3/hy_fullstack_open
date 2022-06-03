@@ -4,7 +4,7 @@ import { useState } from 'react'
 
 const Books = (props) => {
   const result = useQuery(ALL_BOOKS)
-  const [filter, setFilter] = useState('no filter')
+  const [filter, setFilter] = useState('No filter')
 
   if (result.loading) {
     return <div> loading... </div>
