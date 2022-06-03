@@ -4,11 +4,42 @@ import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LogIn from './components/LogIn'
 import RecommendGenre from './components/RecommendGenre'
-import { useApolloClient } from '@apollo/client'
+import { useApolloClient, useSubscription, gql } from '@apollo/client'
+import { ALL_BOOKS } from './queries'
+
+export const BOOK_ADDED = gql`
+  subscription {
+    bookAdded {
+      title
+      published
+      genres
+      author {
+        name
+      }
+    }
+  }
+`
+
 const App = () => {
   const [page, setPage] = useState('authors')
   const [token, setToken] = useState('')
   const client = useApolloClient()
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert('A new book has been added')
+
+      client.cache.updateQuery(
+        { query: ALL_BOOKS },
+        ({ allBooks }) => {
+          return {
+            allBooks: allBooks.concat(addedBook),
+          }
+        }
+      )
+    },
+  })
 
   const logout = () => {
     setToken(null)
