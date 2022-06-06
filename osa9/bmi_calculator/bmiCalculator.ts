@@ -1,7 +1,7 @@
 interface Measurements {
   length: number;
   weight: number;
-};
+}
 
 const parseArguments= (args: Array <string>): Measurements => {
   if( args.length < 4) throw new Error('Not enough arguments');
@@ -12,11 +12,11 @@ const parseArguments= (args: Array <string>): Measurements => {
       length: Number(args[2]),
       weight: Number(args[3])
 
-    }
+    };
   }else {
     throw new Error('Provided values were not numbers!');
   }
-}
+};
 
 export const calculateBmi = (length: number, weight: number) => {
   const length_in_m = length*10**(-2);
@@ -31,7 +31,7 @@ export const calculateBmi = (length: number, weight: number) => {
     return('Normal (healthy weight)');
 
   }
-}
+};
 
 try{
   const { length, weight } = parseArguments(process.argv);
@@ -41,5 +41,5 @@ try{
   if (error instanceof Error) {
     errormessage += 'Error: ' + errormessage;
   }
-  console.log(errormessage)
+  console.log(errormessage);
 }
