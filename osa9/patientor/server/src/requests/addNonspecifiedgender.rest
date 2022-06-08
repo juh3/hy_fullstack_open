@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+  "name": "Viivi Vähemmistö",
+  "dateOfBirth": " 2000-10-10",
+  "occupation": "student",
+  "ssn": "312q5r-123r54",
+  "gender": "non-specified"
+}
