@@ -7,12 +7,13 @@ const patients_json_1 = __importDefault(require("../data/patients.json"));
 const uuid_1 = require("uuid");
 const patients = patients_json_1.default;
 const getPatients = () => {
-    return patients.map(({ id, name, dateOfBirth, occupation, gender }) => ({
+    return patients.map(({ id, name, dateOfBirth, occupation, gender, entries }) => ({
         id,
         name,
         dateOfBirth,
         occupation,
-        gender
+        gender,
+        entries
     }));
 };
 const addPatient = (entry) => {
@@ -21,7 +22,12 @@ const addPatient = (entry) => {
     patients.push(newPatientEntry);
     return newPatientEntry;
 };
+const findById = (id) => {
+    const patient = patients.find(d => d.id === id);
+    return patient;
+};
 exports.default = {
     getPatients,
-    addPatient
+    addPatient,
+    findById
 };

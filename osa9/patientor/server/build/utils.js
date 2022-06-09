@@ -2,17 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.toNewPatientEntry = void 0;
 const types_1 = require("./types");
-const toNewPatientEntry = ({ name, dateOfBirth, ssn, occupation, gender }) => {
+const toNewPatientEntry = ({ name, dateOfBirth, ssn, occupation, gender, entries }) => {
     const newEntry = {
         name: parseName(name),
         dateOfBirth: parseDate(dateOfBirth),
         ssn: parseName(ssn),
         occupation: parseName(occupation),
-        gender: parseGender(gender)
+        gender: parseGender(gender),
+        entries: parseEntry(entries)
     };
     return newEntry;
 };
 exports.toNewPatientEntry = toNewPatientEntry;
+const parseEntry = (entries) => {
+    if (!entries || !Array.isArray(entries)) {
+        throw new Error('Incorrect or missing entry');
+    }
+    return entries;
+};
 const parseName = (name) => {
     if (!name || !isString(name)) {
         throw new Error('Incorrect or missing name');

@@ -4,12 +4,13 @@ import { Patient, SensitivePatientEntry, NewPatientEntry } from '../types';
 const patients: Array<Patient> = patientData;
 
 const getPatients = (): SensitivePatientEntry[] => {
-  return patients.map(({ id, name, dateOfBirth, occupation, gender  }) => ({
+  return patients.map(({ id, name, dateOfBirth, occupation, gender, entries }) => ({
     id,
     name,
     dateOfBirth,
     occupation,
-    gender
+    gender,
+    entries
   }));
 };
 
@@ -25,8 +26,13 @@ const addPatient = ( entry: NewPatientEntry ): Patient => {
 
   };
 
+  const findById = (id: string): Patient | undefined => {
+    const patient = patients.find( d => d.id === id);
+    return patient;
+  };
 
 export default {
   getPatients,
-  addPatient
+  addPatient,
+  findById
 };

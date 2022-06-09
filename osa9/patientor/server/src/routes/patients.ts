@@ -7,8 +7,17 @@ router.get('/', (_req, res) => {
   res.send(patientService.getPatients());
 });
 
-/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+router.get('/:id', (req, res) => {
+  const id = req.params.id;
+  const patient = patientService.findById(id);
+  if(!patient){
+    res.sendStatus(404);
+  } else{
+    res.send(patient);
+  }
+});
 
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 router.post('/', (req, res) => {
   try{
     const 

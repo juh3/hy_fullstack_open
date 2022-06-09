@@ -1,21 +1,27 @@
 import { NewPatientEntry, Gender } from "./types";
 
-type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, occupation: unknown, gender: unknown };
+type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, occupation: unknown, gender: unknown, entries: unknown };
 
 
-export const toNewPatientEntry = ({ name, dateOfBirth, ssn, occupation, gender }: Fields): NewPatientEntry => {
+export const toNewPatientEntry = ({ name, dateOfBirth, ssn, occupation, gender, entries }: Fields): NewPatientEntry => {
   const newEntry: NewPatientEntry = {
     name: parseName( name),
     dateOfBirth: parseDate( dateOfBirth),
     ssn: parseName(ssn),
     occupation: parseName(occupation),
-    gender: parseGender(gender)
+    gender: parseGender(gender),
+    entries: parseEntry(entries)
   };
 
   return newEntry;
 };
 
-
+const parseEntry = (entries: unknown):Array<string> => {
+  if(!entries || !Array.isArray(entries)) {
+    throw new Error('Incorrect or missing entry');
+  }
+  return entries;
+}
 
 const parseName = ( name: unknown): string => {
   if (!name || !isString(name)) {
