@@ -1,7 +1,6 @@
 import patientData from '../data/patients.json';
 import { v1 as uuid } from 'uuid';
 import { Patient, SensitivePatientEntry, NewPatientEntry } from '../types';
-
 const patients: Array<Patient> = patientData;
 
 const getPatients = (): SensitivePatientEntry[] => {
