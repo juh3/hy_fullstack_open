@@ -33,7 +33,7 @@ const Part = ({ part }: TypeProps) => {
         <div>
           <h2> {part.name} {part.exerciseCount}</h2>
           <p> {part.description}</p>
-          <p> requirements: {part.requirements}</p>
+          <p> requirements: {part.requirements} </p>
         </div>
       )
     default:

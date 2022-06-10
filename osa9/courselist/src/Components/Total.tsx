@@ -1,4 +1,3 @@
-import React from 'react';
 import { courseProps } from '../types';
 
 const Total = ({ courseParts }: courseProps) => {

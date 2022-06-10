@@ -1,22 +1,66 @@
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
+import { useStateValue } from "../state";
 import { Patient } from '../types';
+import React from 'react';
+import MaleIcon from '@mui/icons-material/Male';
+import FemaleIcon from '@mui/icons-material/Female';
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { SvgIcon } from "@material-ui/core";
+import { setSinglePatient } from '../state/reducer';
 
-const PatientView = async () => {
+const PatientView =  () => {
+  const [{ patient } , dispatch ] = useStateValue();
+
+
+
   const { id } = useParams<{ id: string }>();
 
-  try{
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    const { data: patient } = await axios.get<Patient>(`${apiBaseUrl}/patients/${id}`);
-    console.log(patient);
+  React.useEffect( () => {
 
-  } catch (e) {
-    console.error(e);
-  }
+    const FetchPatientById = async () => {
+      try{
+        //eslint-disable-next-line
+        const { data: patientFromApi } = await axios.get<Patient>
+          (`${apiBaseUrl}/patients/${id}`         //eslint-disable-line
+        );
+
+        dispatch(setSinglePatient(patientFromApi));
+        
+
+      }  catch (e) {
+        console.error(e);
+      }
+
+    };
+    if (!patient || id !== patient?.id) {
+      void FetchPatientById();
+    }
+  }, [patient, id, dispatch]);
+
+  console.log(patient);
+
+  const GenderIcon = () => {
+    switch( patient?.gender){
+      case "male":
+        return <SvgIcon component = {MaleIcon}  sx={{ fontSize: 40 }}/>;
+      case "female":
+        return <SvgIcon component = {FemaleIcon}  sx={{ fontSize: 40 }}/>;
+      
+      default:
+        return <SvgIcon component = {QuestionMarkIcon}  sx={{ fontSize: 40 }}/>;
+      
+    }
+  };
+
 
   return(
-    <p> Trying to fetch data for the patient </p>
+    <div> 
+      <h1>{patient?.name} {GenderIcon()} </h1>
+      <p> ssn: {patient?.ssn} </p>
+      <p> occupation: {patient?.occupation} </p>
+   </div>
   );
 };
 

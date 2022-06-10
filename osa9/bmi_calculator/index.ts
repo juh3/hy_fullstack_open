@@ -1,14 +1,12 @@
 import express from 'express';
 import { calculateBmi } from './bmiCalculator';
 import { calculateExercises } from './exerciseCalculator';
+import bodyParser from 'body-parser';
 
 
 
 const app = express();
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true }));
-import { Request, Response } from "express";
-
+app.use(bodyParser.json())
 
 app.get('/hello', (_req, res) => {
   res.send('Hello Fullstack');
@@ -33,10 +31,10 @@ app.get('/bmi', (req, res) => {
 });
 
 
-app.post('/exercises', ({ body }: Request ,res: Response) => {
+app.post('/exercises', (req, res) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any,  @typescript-eslint/no-unsafe-assignment
-  const daily_exercises = body.daily_exercises;
-  const target = body.target;
+  console.log(req);
+  const { daily_exercises, target}: any = req.body;
   console.log(daily_exercises);
   console.log(target);
   if (!target || !daily_exercises) {
@@ -51,29 +49,24 @@ app.post('/exercises', ({ body }: Request ,res: Response) => {
 
     if (!isanarray) {
       return res.status(400).json({ error: 'Malformatted Parameters'});
-    }
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any,  @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
-    daily_exercises.reduce( (previousValue: number, currentValue: number) => {
-      if(isNaN(Number(currentValue))) {
+    } else {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any,  @typescript-eslint/no-unsafe-assignment
+  daily_exercises.forEach( (hour: number) => {
+      if (isNaN(Number(hour))) {
         return res.status(400).json({ error: 'Malformatted Parameters'});
       }
-      return previousValue;
+    })
 
-    }, 0);
+    // eslint-disable-next-line
+    const result = calculateExercises(daily_exercises, Number(target));
+    return res.status(200).json(
+      result
+    );}
+  }else{
+  return res.json({ error: 'Not given an array of exercises'});
   }
-   // eslint-disable-next-line
-  const result = calculateExercises(daily_exercises, Number(target));
-  return res.status(200).json(
-    result
-  );
-});
+})
 
-// eslint-disable-next-line
-const unknownEndpoint = (_request: any, response: any) => {
-  response.status(404).send({ error: 'unknown endpoint' })
-}
-
-app.use(unknownEndpoint)
 
 const PORT = '3000';
 
