@@ -15,9 +15,8 @@ const getPatients = (): SensitivePatientEntry[] => {
 };
 
 const addPatient = ( entry: NewPatientEntry ): Patient => {
-  const id = uuid();
-
-  const newPatientEntry = { id: id,
+  
+  const newPatientEntry = { id: uuid(),
     ...entry
   };
   patients.push(newPatientEntry);

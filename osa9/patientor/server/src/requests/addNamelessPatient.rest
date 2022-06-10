@@ -5,5 +5,7 @@ Content-Type: application/json
   "dateOfBirth": "1995-11-31",
   "occupation": "Plumber",
   "ssn": "12384-23rf",
-  "gender": "other"
+  "gender": "other",
+  "name": "Kalle Kallekas",
+  "entries": []
 }
