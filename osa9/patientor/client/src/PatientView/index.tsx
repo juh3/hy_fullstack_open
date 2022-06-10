@@ -9,6 +9,7 @@ import FemaleIcon from '@mui/icons-material/Female';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { SvgIcon } from "@material-ui/core";
 import { setSinglePatient } from '../state/reducer';
+import ShowEntry from "./ShowEntry";
 
 const PatientView =  () => {
   const [{ patient } , dispatch ] = useStateValue();
@@ -55,11 +56,19 @@ const PatientView =  () => {
   };
 
 
+
+
   return(
     <div> 
       <h1>{patient?.name} {GenderIcon()} </h1>
       <p> ssn: {patient?.ssn} </p>
       <p> occupation: {patient?.occupation} </p>
+      <h2> Entries</h2>
+      {patient?.entries?.map( (entry) => (
+        <ShowEntry key = {entry.id} entry = {entry} />
+      ))
+      } 
+
    </div>
   );
 };
