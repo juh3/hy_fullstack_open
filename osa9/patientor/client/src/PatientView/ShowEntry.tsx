@@ -1,30 +1,40 @@
-import { Diagnose, EntryProps } from '../types';
-import { useStateValue } from "../state";
-
-const ShowEntry = ({ entry }: EntryProps) => {
-  const [{ diagnoses }  ] = useStateValue();
-
-
-  const findDiagnose = (code : string) => {
-    const diagnosis: Diagnose | undefined = diagnoses.find( c => c.code === code);
-    return(
-      <p> {code} {diagnosis?.name} </p>
-    );
-  };
-
-  console.log(diagnoses);
-  return (
-    <div>
-      <p> {entry.date} {entry.description}</p>
-      <ul>
-        {entry.diagnosisCodes?.map( code => (
-          <li key = {code}>
-            {findDiagnose(code)}
-          </li>
-        ))}
-      </ul>
+import { HealthCheckEntry, OccupationalHealthcareEntry, HospitalEntry } from '../types';
+import LocalHospitalIcon from '@mui/icons-material/LocalHospital';
+import HealthAndSafetyIcon from '@mui/icons-material/HealthAndSafety';
+import HealingIcon from '@mui/icons-material/Healing';
+/*import FavoriteIcon from '@mui/icons-material/Favorite';*/
+import { SvgIcon } from "@material-ui/core";
+import './PatientStyle.css';
+export const RenderHospitalEntry = ( {entry} : {entry: HospitalEntry }) => {
+  return(
+    <div className = "entry">
+      <p >{entry.date} <SvgIcon component = {LocalHospitalIcon}  sx={{ fontSize: 40 }}/></p>
+      <p > {entry.description}</p>
+      <p > diagnose by {entry.specialist}</p>
     </div>
   );
 };
 
-export default ShowEntry;
+export const RenderOccupationalEntry = (  {entry} : {entry: OccupationalHealthcareEntry} ) => {
+
+  return(
+    <div className = "entry">
+      <p > {entry.date} <SvgIcon component = {HealthAndSafetyIcon}  sx={{ fontSize: 40 }}/></p>
+      <p > {entry.description}</p>
+
+      <p > diagnose by {entry.specialist}</p>
+    </div>
+  );
+};
+
+export const RenderCheckEntry = ( {entry}  : {entry: HealthCheckEntry}) => {
+
+  return(
+
+    <div className = "entry">
+      <p>{entry.date} <SvgIcon component = {HealingIcon}  sx={{ fontSize: 40 }}/></p>
+      <p> {entry.description}</p>
+      <p> diagnose by {entry.specialist}</p>
+    </div>
+  );
+};

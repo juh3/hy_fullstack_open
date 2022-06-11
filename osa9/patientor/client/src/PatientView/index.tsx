@@ -2,17 +2,16 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import { apiBaseUrl } from "../constants";
 import { useStateValue } from "../state";
-import { Patient } from '../types';
+import { Entry, Patient } from '../types';
 import React from 'react';
 import MaleIcon from '@mui/icons-material/Male';
 import FemaleIcon from '@mui/icons-material/Female';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import { SvgIcon } from "@material-ui/core";
 import { setSinglePatient } from '../state/reducer';
-import ShowEntry from "./ShowEntry";
-
+import { RenderHospitalEntry, RenderCheckEntry, RenderOccupationalEntry } from "./ShowEntry";
 const PatientView =  () => {
-  const [{ patient, diagnoses } , dispatch ] = useStateValue();
+  const [{ patient } , dispatch ] = useStateValue();
 
   const { id } = useParams<{ id: string }>();
 
@@ -38,9 +37,6 @@ const PatientView =  () => {
     }
   }, [patient, id, dispatch]);
 
-  console.log(patient);
-  console.log(diagnoses);
-
   const GenderIcon = () => {
     switch( patient?.gender){
       case "male":
@@ -54,6 +50,25 @@ const PatientView =  () => {
     }
   };
 
+  const EntryDetails = ( {entry}: {entry: Entry}) => {
+    switch( entry.type) {
+      case "Hospital":
+        return <RenderHospitalEntry entry = {entry} />;
+      case "OccupationalHealthcare":
+        return <RenderOccupationalEntry entry = {entry} />;
+      case "HealthCheck":
+        return <RenderCheckEntry entry = { entry } />;
+      default:
+        return assertNever(entry);
+    }
+  };
+
+  const assertNever = (value: never): never => {
+    throw new Error(
+      `Unhandled discriminated union member: ${JSON.stringify(value)}`
+    );
+  };
+
   return(
     <div> 
       <h1>{patient?.name} {GenderIcon()} </h1>
@@ -61,9 +76,9 @@ const PatientView =  () => {
       <p> occupation: {patient?.occupation} </p>
       <h2> Entries</h2>
       {patient?.entries?.map( (entry) => (
-        <ShowEntry key = {entry.id} entry = {entry} />
+        <EntryDetails key = {entry.id} entry = {entry} />
       ))
-      } 
+      }
 
    </div>
   );
