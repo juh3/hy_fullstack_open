@@ -12,9 +12,7 @@ import { setSinglePatient } from '../state/reducer';
 import ShowEntry from "./ShowEntry";
 
 const PatientView =  () => {
-  const [{ patient } , dispatch ] = useStateValue();
-
-
+  const [{ patient, diagnoses } , dispatch ] = useStateValue();
 
   const { id } = useParams<{ id: string }>();
 
@@ -41,6 +39,7 @@ const PatientView =  () => {
   }, [patient, id, dispatch]);
 
   console.log(patient);
+  console.log(diagnoses);
 
   const GenderIcon = () => {
     switch( patient?.gender){
@@ -54,9 +53,6 @@ const PatientView =  () => {
       
     }
   };
-
-
-
 
   return(
     <div> 
