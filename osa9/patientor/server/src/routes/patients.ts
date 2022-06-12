@@ -34,4 +34,11 @@ router.post('/', (req, res) => {
   }
 });
 
+router.post('/:id/entries', (req, res) => {
+  try{
+    const entry = toEntry(req.body);
+    
+  }
+};)
+
 export default router;

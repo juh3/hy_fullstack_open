@@ -1,4 +1,4 @@
-import { NewPatientEntry, Gender } from "./types";
+import { NewPatientEntry, Gender, NewEntry, EntryType, SpecificNewEntry, HospitalEntry, OccupationalHealthcareEntry } from "./types";
 
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, occupation: unknown, gender: unknown };
 
@@ -50,4 +50,64 @@ const parseGender = (gender: unknown): Gender => {
 const isGender = ( param: any): param is Gender => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return Object.values(Gender).includes(param);
+};
+
+const parseEntryType = (type: unknown): EntryType => {
+  if(!type||!isType(type)) {
+    throw new Error('Incorrect or missing entry type')
+  }
+  return type;
+};
+
+const isType = (param: any): param is EntryType => {
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return Object.values(EntryType).includes(param);
+};
+
+export const toEntry = (entry: any): SpecificNewEntry => {
+
+  const newEntry: NewEntry = {
+    description: parseName(entry.description),
+    date: parseDate( entry.date),
+    specialist: parseName(entry.specialist),
+  };
+
+  if(entry.diagnosisCodes) {
+    if (Array.isArray(entry.diagnosisCodes)){
+      const codes = entry.diagnosisCodes.map((c: unknown) => parseName(c))
+      if (codes) {
+        newEntry.diagnosisCodes = codes
+      }
+  }
+
+  switch(entry.type){
+
+    case "Hospital":
+      const hospitalEntry: HospitalEntry = {
+        type: parseEntryType(entry.type)
+        discharge: 
+        ...newEntry
+      };
+     
+    
+      case "OccupationalHealthcare":
+        const occupationalEntry: OccupationalHealthcareEntry = {
+          type: parseEntryType(entry.type),
+          employerName: parseName(entry.employerName),
+          sickLeave: 
+
+        }
+
+      case "HealthCheck":
+        handleHealthCheck(entry)
+      
+    default: 
+      return assertNever(entry);
+    }
+}
+
+const assertNever = (value: never): never => {
+  throw new Error(
+    `Unhandled discriminated union member: ${JSON.stringify(value)}`
+  );
 };
