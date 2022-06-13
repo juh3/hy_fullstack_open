@@ -35,4 +35,23 @@ router.post('/', (req, res) => {
         res.status(400).send(errorMessage);
     }
 });
+router.post('/:id/entries', (req, res) => {
+    try {
+        const entry = (0, utils_1.toEntry)(req.body);
+        console.log(entry);
+        const id = req.params.id;
+        const patient = patientService_1.default.findById(id);
+        if (patient) {
+            const addedEntry = patientService_1.default.addEntry(entry, patient);
+            res.json(addedEntry);
+        }
+    }
+    catch (error) {
+        let errorMessage = 'Something went wrong';
+        if (error instanceof Error) {
+            errorMessage += 'Error: ' + error.message;
+        }
+        res.status(400).send(errorMessage);
+    }
+});
 exports.default = router;
