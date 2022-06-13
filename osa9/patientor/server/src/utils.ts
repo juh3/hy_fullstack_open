@@ -1,4 +1,4 @@
-import { NewPatientEntry, Gender, NewEntry, EntryType, SpecificNewEntry, HospitalEntry, OccupationalHealthcareEntry, DischargeType, SickLeaveType, HealthCheckEntry, HealthCheckRating } from "./types";
+import { NewPatientEntry, Gender, NewEntry, SpecificNewEntry,  DischargeType, SickLeaveType, HealthCheckRating } from "./types";
 
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, occupation: unknown, gender: unknown };
 
@@ -52,7 +52,7 @@ const isGender = ( param: any): param is Gender => {
   return Object.values(Gender).includes(param);
 };
 
-const parseEntryType = (type: unknown): EntryType => {
+/*onst parseEntryType = (type: unknown): EntryType => {
   if(!type||!isType(type)) {
     throw new Error('Incorrect or missing entry type')
   }
@@ -62,7 +62,7 @@ const parseEntryType = (type: unknown): EntryType => {
 const isType = (param: any): param is EntryType => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   return Object.values(EntryType).includes(param);
-};
+};*/
 
 const isDischarge = (param:any): boolean => {
   if( param.date && param.criteria && isDate(param.date) && isString(param.criteria)) {
@@ -103,13 +103,27 @@ const parseHealthCheckRating  = (healthCheckRating: unknown): HealthCheckRating 
   return healthCheckRating;
 };
 
+const parseDescription = ( description: unknown): string => {
+  if (!description || !isString(description)) {
+    throw new Error('Incorrect or missing description');
+  }
+
+  return description;
+};
+
+const parseSpecialist = (specialist: unknown): string => {
+  if(!specialist || !isString(specialist)) {
+    throw new Error('Incorrect or missing specialist')
+  }
+  return specialist;
+}
 
 export const toEntry = (entry: any): SpecificNewEntry => {
-
+  console.log('entry to be added', entry);
   const newEntry: NewEntry = {
-    description: parseName(entry.description),
+    description: parseDescription(entry.description),
     date: parseDate( entry.date),
-    specialist: parseName(entry.specialist),
+    specialist: parseSpecialist(entry.specialist),
   };
 
   if(entry.diagnosisCodes) {
@@ -124,8 +138,8 @@ export const toEntry = (entry: any): SpecificNewEntry => {
   switch(entry.type){
 
     case "Hospital":
-      const hospitalEntry: HospitalEntry = {
-        type: parseEntryType(entry.type),
+      const hospitalEntry = {
+        type: entry.type,
         discharge: parseDischarge(entry.discharge),
         ...newEntry
       };
@@ -133,8 +147,8 @@ export const toEntry = (entry: any): SpecificNewEntry => {
      
     
       case "OccupationalHealthcare":
-        const occupationalEntry: OccupationalHealthcareEntry = {
-          type: parseEntryType(entry.type),
+        const occupationalEntry = {
+          type: entry.type,
           employerName: parseName(entry.employerName),
           sickLeave: parseSickLeave(entry.sickLeave),
           ...newEntry
@@ -142,20 +156,14 @@ export const toEntry = (entry: any): SpecificNewEntry => {
         return occupationalEntry;
 
       case "HealthCheck":
-        const healthcheckEntry: HealthCheckEntry = {
-          type: parseEntryType(entry.type),
+        const healthcheckEntry = {
+          type: entry.type,
           healthCheckRating: parseHealthCheckRating(entry.healthCheckRating),
           ...newEntry
         };
         return healthcheckEntry;
       
     default: 
-      return assertNever(newEntry);
+       throw new Error('`Unhandled discriminated union member:')
     }
 }
-
-const assertNever = (value: never): never => {
-  throw new Error(
-    `Unhandled discriminated union member: ${JSON.stringify(value)}`
-  );
-};
