@@ -1,4 +1,4 @@
-import { NewPatientEntry, Gender, NewEntry, EntryType, SpecificNewEntry, HospitalEntry, OccupationalHealthcareEntry } from "./types";
+import { NewPatientEntry, Gender, NewEntry, EntryType, SpecificNewEntry, HospitalEntry, OccupationalHealthcareEntry, DischargeType, SickLeaveType, HealthCheckEntry, HealthCheckRating } from "./types";
 
 type Fields = { name: unknown, dateOfBirth: unknown, ssn: unknown, occupation: unknown, gender: unknown };
 
@@ -64,6 +64,46 @@ const isType = (param: any): param is EntryType => {
   return Object.values(EntryType).includes(param);
 };
 
+const isDischarge = (param:any): boolean => {
+  if( param.date && param.criteria && isDate(param.date) && isString(param.criteria)) {
+    return param;
+  }
+  else return false;
+}
+
+const parseDischarge = (discharge: unknown): DischargeType => {
+  if(!discharge ||!isDischarge(discharge)) {
+    throw new Error('Incorrect or missing discharge')
+  }
+  return discharge as DischargeType;
+};
+
+
+const isSickLeave = (param:any): boolean => {
+  if(param.startDate && param.endDate && isDate(param.startDate) && isDate(param.endDate)) {
+    return param;
+  }
+  else return false;
+}
+const parseSickLeave = (sickLeave: unknown): SickLeaveType => {
+  if(!sickLeave || !isSickLeave(sickLeave)) {
+    throw new Error('Incorrect or missing sickleave')
+  }
+  return sickLeave as SickLeaveType;
+}
+
+const isHealthCheckRating = (param:any): param is HealthCheckRating => {
+  return Object.values(HealthCheckRating).includes(param);
+}
+
+const parseHealthCheckRating  = (healthCheckRating: unknown): HealthCheckRating => {
+  if(!healthCheckRating || !isHealthCheckRating(healthCheckRating)) {
+    throw new Error('Incorrect or missing healthcheckrating')
+  }
+  return healthCheckRating;
+};
+
+
 export const toEntry = (entry: any): SpecificNewEntry => {
 
   const newEntry: NewEntry = {
@@ -78,31 +118,39 @@ export const toEntry = (entry: any): SpecificNewEntry => {
       if (codes) {
         newEntry.diagnosisCodes = codes
       }
+    }
   }
 
   switch(entry.type){
 
     case "Hospital":
       const hospitalEntry: HospitalEntry = {
-        type: parseEntryType(entry.type)
-        discharge: 
+        type: parseEntryType(entry.type),
+        discharge: parseDischarge(entry.discharge),
         ...newEntry
       };
+      return hospitalEntry;
      
     
       case "OccupationalHealthcare":
         const occupationalEntry: OccupationalHealthcareEntry = {
           type: parseEntryType(entry.type),
           employerName: parseName(entry.employerName),
-          sickLeave: 
-
-        }
+          sickLeave: parseSickLeave(entry.sickLeave),
+          ...newEntry
+        };
+        return occupationalEntry;
 
       case "HealthCheck":
-        handleHealthCheck(entry)
+        const healthcheckEntry: HealthCheckEntry = {
+          type: parseEntryType(entry.type),
+          healthCheckRating: parseHealthCheckRating(entry.healthCheckRating),
+          ...newEntry
+        };
+        return healthcheckEntry;
       
     default: 
-      return assertNever(entry);
+      return assertNever(newEntry);
     }
 }
 
