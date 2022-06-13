@@ -6,9 +6,9 @@ Content-Type: application/application/json
     "type": "Hospital",
     "specialist": "MD House",
     "diagnosisCodes": [
-  "S62.5"
-  ],
-  "description": "Healing time appr. 15 weeks. patient doesn't remember how he got the injury.",
+    "S62.5"
+    ],
+    "description": "Healing time appr. 15 weeks. patient doesn't remember how he got the injury.",
   "discharge": {
     "date": "2018-02-16",
     "criteria": "Thumb has healed."
