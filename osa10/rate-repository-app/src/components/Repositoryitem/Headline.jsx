@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     flexDirection: 'column',
     justifyContent: 'space-around',
-    paddingLeft: 10,
+    paddingLeft: 1,
     paddingTop: 5
     
   },
@@ -28,17 +28,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const formatNumber = (number) => {
-  if (number/1000 >1){
-    return number/1000
-  }
-}
-
 const Headline = ({ item }) => {
   return ( 
     <View style = {styles.container}>
       <View style = {styles.container}> 
-        <Image style = {{ width: 60, height:60, borderRadius: 5}} source={{ uri:`${item.ownerAvatarUrl}`}}/>
+        <Image style = {{ width: 50, height:50, borderRadius: 5}} source={{ uri:`${item.ownerAvatarUrl}`}}/>
       </View>
       <View style = {styles.description}>
         <Text color = 'textSecondary' fontWeight= 'bold' fontSize ='subheading'>{item.fullName} </Text>

@@ -2,6 +2,7 @@ import React from 'react'
 import {  View, Text, StyleSheet } from 'react-native';
 import Headline from './Headline';
 import Stats from './Stats';
+
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
