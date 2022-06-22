@@ -4,6 +4,7 @@ import FormikTextInput from './FormikTextInput';
 import Text from './Text';
 import { Formik } from 'formik';
 import theme from '../theme';
+import * as yup from 'yup';
 
 const styles = StyleSheet.create({
   field:{
@@ -39,11 +40,24 @@ const SignIn = () => {
     console.log(values)
   }
   return(
-    <Formik initialValues={initialValues} onSubmit={onSubmit}>
+    <Formik initialValues={initialValues}
+     onSubmit={onSubmit}
+     validationSchema = {validationSchema}
+     >
       {({ handleSubmit }) => <LoginForm onSubmit={handleSubmit} />}
     </Formik>
   )
 };
 
+const validationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .min(2, 'Username too short')
+    .required('Username is required'),
+  password: yup
+    .string()
+    .min(2, 'Password too short')
+    .required('Password is required'),
+});
 
 export default SignIn
