@@ -2,10 +2,11 @@ import React from 'react'
 import { Pressable, View, StyleSheet} from 'react-native';
 import FormikTextInput from './FormikTextInput';
 import Text from './Text';
-import { Formik } from 'formik';
+import { Formik, replace } from 'formik';
 import theme from '../theme';
 import * as yup from 'yup';
-
+import useSignIn from '../hooks/useSignIn';
+import { useNavigate } from 'react-router-native';
 const styles = StyleSheet.create({
   field:{
     height:60,
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
   },
 });
 const LoginForm = ({ onSubmit}) => {
+
   return(
     <View>
       <FormikTextInput name = "username" placeholder = "Username"/>
@@ -36,9 +38,23 @@ const initialValues = {
   password: '',
 };
 const SignIn = () => {
-  const onSubmit = (values) =>{
-    console.log(values)
-  }
+  let navigate = useNavigate();
+
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const { username, password } = values;
+
+    try {
+      const { data } = await signIn({ username, password });
+      console.log(data);
+      navigate("/", { replace: true})
+     
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return(
     <Formik initialValues={initialValues}
      onSubmit={onSubmit}

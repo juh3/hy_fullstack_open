@@ -1,9 +1,9 @@
-import Constants from 'expo-constants';
-import {  StyleSheet, View } from 'react-native';
+import {  StatusBar, StyleSheet, View } from 'react-native';
 import AppBar from './AppBar';
 import RepositoryList from './RepositoryList';
 import { Route, Routes, Navigate } from 'react-router-native';
 import SignIn from './SignIn';
+import SignOut from './SignOut';
 
 const styles = StyleSheet.create({
   container: {
@@ -21,7 +21,9 @@ const Main = () => {
         <Route path = "/" element = {<RepositoryList />} exact />
         <Route path = "*" element = {<Navigate to="/" replace />} />
         <Route path = "/signin" element = {<SignIn />} />
+        <Route path = "/signout" element = {<SignOut />} />
       </Routes>
+      <StatusBar />
     </View>
   );
 };
