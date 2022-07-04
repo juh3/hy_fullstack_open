@@ -14,11 +14,12 @@ const styles = StyleSheet.create({
 
   description: {
     display: 'flex',
-    flexGrow: 0,
     flexDirection: 'column',
     justifyContent: 'space-around',
     paddingLeft: 1,
-    paddingTop: 5
+    paddingTop: 5,
+    flexShrink: 1,
+
     
   },
   text: {
@@ -35,10 +36,10 @@ const Headline = ({ item }) => {
         <Image style = {{ width: 50, height:50, borderRadius: 5}} source={{ uri:`${item.ownerAvatarUrl}`}}/>
       </View>
       <View style = {styles.description}>
-        <Text color = 'textSecondary' fontWeight= 'bold' fontSize ='subheading'>{item.fullName} </Text>
-        <Text color = 'textSecondary' fontSize = 'subheading'> {item.description}</Text>
+        <Text testID = "fullName" color = 'textSecondary' fontWeight= 'bold' fontSize ='subheading'>{item.fullName} </Text>
+        <Text testID = "description" color = 'textSecondary' fontSize = 'subheading'> {item.description}</Text>
         <View style = {{ flexDirection:'row'}}>
-          <Text style = {{ backgroundColor: theme.colors.primary, borderRadius: 4, padding:5}} fontSize = 'subheading'> {item.language}</Text>
+          <Text testID = "language" style = {{ backgroundColor: theme.colors.primary, borderRadius: 4, padding:5}} fontSize = 'subheading'> {item.language}</Text>
         </View>
       </View>
     </View>

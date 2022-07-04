@@ -1,7 +1,8 @@
 import React from 'react'
-import {  View, Text, StyleSheet } from 'react-native';
+import {  View, StyleSheet } from 'react-native';
 import Headline from './Headline';
 import Stats from './Stats';
+import LinkButton from './LinkButton'
 
 const styles = StyleSheet.create({
   container: {
@@ -21,10 +22,12 @@ const styles = StyleSheet.create({
 });
 
 const RepositoryItem = ({ item }) => {
+
   return (
     <View style = {styles.container}>
       <Headline item = {item} />
       <Stats item = {item} />
+      {item.url && <LinkButton url = {item.url}/>}
     </View>
   )
 }

@@ -7,7 +7,7 @@
       "es6": true,
       "react-native/react-native": true
   },
-  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:jest/recommended"],
   "parserOptions": {
       "ecmaFeatures": {
           "experimentalObjectRestSpread": true,

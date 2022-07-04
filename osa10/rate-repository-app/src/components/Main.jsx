@@ -4,7 +4,9 @@ import RepositoryList from './RepositoryList';
 import { Route, Routes, Navigate } from 'react-router-native';
 import SignIn from './SignIn';
 import SignOut from './SignOut';
-
+import SingleRepository from './SingleRepositoryView';
+import ReviewForm from './ReviewForm'
+import SignUp from './SignUp'
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -20,8 +22,11 @@ const Main = () => {
       <Routes>
         <Route path = "/" element = {<RepositoryList />} exact />
         <Route path = "*" element = {<Navigate to="/" replace />} />
-        <Route path = "/signin" element = {<SignIn />} />
-        <Route path = "/signout" element = {<SignOut />} />
+        <Route path = "/signin" element = {<SignIn />} exact/>
+        <Route path = "/signout" element = {<SignOut />} exact/>
+        <Route path = "/repository/:id" element = { <SingleRepository />} exact/>
+        <Route path = "/reviewform" element = {<ReviewForm />} exact />
+        <Route path = "signup" element = {<SignUp />} exact />
       </Routes>
       <StatusBar />
     </View>

@@ -3,10 +3,9 @@ import Text from './Text';
 import { Link }  from 'react-router-native';
 import Constants from 'expo-constants';
 import theme from '../theme';
-import SignIn from './SignIn';
 import { ME } from '../graphql/queries'
 import { useQuery } from '@apollo/client';
-import { useEffect } from 'react';
+
 const styles = StyleSheet.create({
   container: {
     paddingTop: Constants.statusBarHeight,
@@ -15,8 +14,13 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
+
+  tabs: {
+    flexShrink: 0,
+    paddingLeft: 10
+  }
 
 });
 
@@ -27,22 +31,30 @@ const AppBar = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView horizontal>
-        <Link to ="/">
-          <Text fontSize='subheading' fontWeight= 'bold'> Repositories </Text>
-        </Link>
+        <ScrollView horizontal>
+          <Link to ="/">
+            <Text fontSize='subheading' fontWeight= 'bold' style={styles.tabs}> Repositories </Text>
+          </Link>
 
-        { !data && <Link to = "/Signin" >
-          <Text fontSize='subheading' fontWeight = 'bold'>Sign in</Text>
-        </Link>
-        }
+          { data && <Link to = "/ReviewForm"> 
+            <Text fontSize='subheading' fontWeight = 'bold' style={styles.tabs}>Create a review</Text>
+          </Link>}
 
-        {data && <Link to = "/Signout">
-          <Text fontSize='subheading' fontWeight='bold'> Sign out </Text>
-        </Link>
-        }
-      </ScrollView>
+          { !data && <Link to = "/Signin" >
+            <Text fontSize='subheading' fontWeight = 'bold' style={styles.tabs}>Sign in</Text>
+          </Link>
+          }
 
+          {data && <Link to = "/Signout">
+            <Text fontSize='subheading' fontWeight='bold' style={styles.tabs}> Sign out </Text>
+          </Link>
+          }
+
+          {!data && <Link to = "/SignUp">
+            <Text fontSize='subheading' fontWeight='bold' style={styles.tabs}> Sign up </Text>
+          </Link>
+          }
+        </ScrollView>
     </View>
   );
 };

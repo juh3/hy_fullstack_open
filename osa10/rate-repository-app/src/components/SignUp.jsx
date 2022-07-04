@@ -7,6 +7,9 @@ import theme from '../theme';
 import * as yup from 'yup';
 import useSignIn from '../hooks/useSignIn';
 import { useNavigate } from 'react-router-native';
+import { useMutation } from '@apollo/client';
+import { CREATE_USER } from '../graphql/mutations';
+
 const styles = StyleSheet.create({
   field:{
     height:60,
@@ -18,15 +21,16 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 });
-export const LoginForm = ({ onSubmit}) => {
+export const SignUpForm = ({ onSubmit}) => {
 
   return(
     <View>
       <FormikTextInput name = "username" placeholder = "Username"/>
       <FormikTextInput name = "password" placeholder = "Password" secureTextEntry/>
+      <FormikTextInput name = "passwordConfirm" placeholder = "Password confirmation" secureTextEntry/>
       <View style={styles.field}>
         <Pressable onPress = {onSubmit}>
-          <Text fontWeight='bold' fontSize = 'subheading'> Sign in</Text>
+          <Text fontWeight='bold' fontSize = 'subheading'> Sign up</Text>
         </Pressable>
       </View>
   </View>
@@ -36,18 +40,22 @@ export const LoginForm = ({ onSubmit}) => {
 const initialValues = {
   username: '',
   password: '',
+  passwordConfirm: '',
 };
-const SignIn = () => {
+const SignUp = () => {
   let navigate = useNavigate();
-
+  const [signUp] = useMutation(CREATE_USER)
   const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
+      const { data } = await signUp({ variables: {user: { username, password }}});
+      await signIn({ username, password });
       navigate("/", { replace: true})
+      console.log(data)
+      
      
     } catch (e) {
       console.log(e);
@@ -59,7 +67,7 @@ const SignIn = () => {
      onSubmit={onSubmit}
      validationSchema = {validationSchema}
      >
-      {({ handleSubmit }) => <LoginForm onSubmit={handleSubmit} />}
+      {({ handleSubmit }) => <SignUpForm onSubmit={handleSubmit} />}
     </Formik>
   )
 };
@@ -67,12 +75,18 @@ const SignIn = () => {
 const validationSchema = yup.object().shape({
   username: yup
     .string()
-    .min(2, 'Username too short')
+    .min(1, 'Username too short')
+    .max(30, 'Username too long')
     .required('Username is required'),
   password: yup
     .string()
-    .min(2, 'Password too short')
+    .min(5, 'Password too short')
+    .max(50,'Password too long')
     .required('Password is required'),
+  passwordConfirm: yup
+    .string()
+    .oneOf([yup.ref('password'), null])
+    .required('Password is required')
 });
 
-export default SignIn
+export default SignUp
