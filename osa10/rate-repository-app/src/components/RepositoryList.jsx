@@ -1,66 +1,73 @@
-import { FlatList, View, Pressable, StyleSheet } from 'react-native';
+import { FlatList, View, Pressable, StyleSheet, TextInput } from 'react-native';
 import RepositoryItem from './Repositoryitem/RepositoryItem'
 import useRepositories from '../hooks/useRepositories';
 import { useNavigate } from 'react-router-native';
-import { useCallback, useState } from 'react';
-import {  Button, Menu, Divider, Provider } from 'react-native-paper';
-
-export const RepositoryListContainer = ({ repositories }) => {
-
-  const [visible , setVisible] = useState(false)
-  const openMenu = () => setVisible(true);
-
-  const closeMenu = () => setVisible(false);
-
-  const FilterPicker = () => {
-    return(
-    <Provider>
-      <View
-        style={{
-          paddingTop: 50,
-          flexDirection: 'row',
-          justifyContent: 'center',
-        }}>
-        <Menu
-          visible={visible}
-          onDismiss={closeMenu}
-          anchor={<Button onPress={openMenu}>Show menu</Button>}>
-          <Menu.Item leadingIcon="redo" onPress={() => {}} title="Redo" />
-          <Menu.Item leadingIcon="undo" onPress={() => {}} title="Undo" />
-          <Menu.Item leadingIcon="content-cut" onPress={() => {}} title="Cut" disabled />
-          <Menu.Item leadingIcon="content-copy" onPress={() => {}} title="Copy" disabled />
-          <Menu.Item leadingIcon="content-paste" onPress={() => {}} title="Paste" />
-          <Menu.Item onPress={() => {}} title="Item 3" />
-        </Menu>
-      </View>
-    </Provider>
-    );
-  };
-
-  const repositoryNodes = repositories
-    ? repositories.edges.map((edge) => edge.node)
-    : [];
-  
-  const styles = StyleSheet.create({
-    separator: {
-      height: 10,
-    },
-  });
-
-  const ItemSeparator = () => <View style={styles.separator}/>;
+import REACT, { useCallback, useState } from 'react';
+import { Picker } from '@react-native-picker/picker'
+import { useDebounce } from 'use-debounce'
 
 
-  return (
-    <FlatList
-      data={repositoryNodes}
-      ItemSeparatorComponent= {ItemSeparator}
-      ListHeaderComponent = {<FilterPicker />}
-      renderItem = {({ item }) => 
-        <IdPressable item = {item} />
-      }
-      />
+const SearchTab = ({ setKeyword}) => {
+ 
+  return(
+    <TextInput
+      onChangeText={(text) => setKeyword(text)}
+      placeholder = 'Filter by username'
+    />
   )
 }
+
+const FilterPicker = ({ filter, setFilter}) => {
+  return(
+    <Picker
+      selectedValue={filter}
+      onValueChange={(itemValue, itemIndex) =>
+        setFilter(itemValue)
+      }>
+      <Picker.Item label="latest" value="CREATED_AT" />
+      <Picker.Item label="highest to lowest" value="DESC" />
+      <Picker.Item label="lowest to highest" value="ASC" />
+    </Picker>
+  );
+};
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+});
+const ItemSeparator = () => <View style={styles.separator}/>;
+
+export class RepositoryListContainer extends REACT.Component {
+  renderHeader = () => {
+    const props = this.props
+    return(
+      <View>
+        <SearchTab  setKeyword = {props.setKeyword}/>
+        <FilterPicker filter = {props.filter} setFilter = {props.setFilter}/>
+      </View>
+    )
+  }
+  render(){
+
+    const repositoryNodes = this.props.repositories
+      ? this.props.repositories.edges.map((edge) => edge.node)
+      : [];
+    
+   
+
+
+
+    return (
+      <FlatList
+        data={repositoryNodes}
+        ItemSeparatorComponent= {ItemSeparator}
+        ListHeaderComponent = {this.renderHeader}
+        renderItem = {({ item }) => 
+          <IdPressable item = {item} />
+        }
+        />
+    )
+}}
 
 const IdPressable = ({ item }) => {
   let navigate = useNavigate()
@@ -69,9 +76,6 @@ const IdPressable = ({ item }) => {
     navigate(`/repository/${item.id}`);
   }, [item]);
     
-
-  console.log(item, 'item')
-  console.log(item.id, 'item id')
   return(
     <View>
       <Pressable onPress={() => {onPressFunction(item.id)}}>
@@ -82,9 +86,12 @@ const IdPressable = ({ item }) => {
 }
 const RepositoryList = () => {
   const [filter, setFilter ] = useState("CREATED_AT")
-  console.log(filter)
-  const { repositories } = useRepositories(filter)
-  return <RepositoryListContainer repositories={repositories} />;
+  const [ keyword, setKeyword] = useState("")
+  const [keywordValue] = useDebounce(keyword, 500)
+
+  const { repositories } = useRepositories(filter, keywordValue)
+
+  return <RepositoryListContainer repositories={repositories} filter = {filter} setFilter = {setFilter} setKeyword = {setKeyword}  />;
 };
 
 export default RepositoryList;
