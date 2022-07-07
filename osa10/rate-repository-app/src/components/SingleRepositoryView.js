@@ -1,4 +1,4 @@
-import React from 'react'
+import REACT from 'react'
 import { useParams } from 'react-router-native'
 import { useQuery } from '@apollo/client'
 import { GET_REPOSITORY, GET_REVIEWS } from '../graphql/queries'
@@ -7,6 +7,7 @@ import { View, FlatList, StyleSheet } from 'react-native'
 import theme from '../theme'
 import Text from '../components/Text'
 import { format } from 'date-fns'
+import useReviews from '../hooks/useReviews'
 
 const SingleRepositoryView = ({ repository}) => {
   return(
@@ -68,41 +69,60 @@ const ReviewItem = ({ review }) => {
  )
 };
 
+const styles = StyleSheet.create({
+  separator: {
+    height: 10,
+  },
+});
+
+const ItemSeparator = () => <View style={styles.separator}/>;
+
+export class SingleRepoContainer extends REACT.Component {
+  renderHeader = () => {
+    const props = this.props
+    return(
+      <View>
+        <SingleRepositoryView repository={props.repository} />
+      </View>
+    )
+  }
+  render(){
+    const reviewNodes = this.props.reviews
+    ? this.props.reviews.edges.map((edge) => edge.node)
+    : [];
+
+  return(
+    <FlatList
+        data={reviewNodes}
+        ItemSeparatorComponent= {ItemSeparator}
+        ListHeaderComponent = {this.renderHeader}
+        renderItem = {({ item }) => 
+          <ReviewItem review={item} />
+        }
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.5}
+      />
+  )
+}
+}
 const SingleRepository = () => {
   const { id } = useParams()
+  const { reviews, fetchMore } = useReviews(id)
   const result = useQuery(GET_REPOSITORY, { fetchPolicy: 'cache-and-network', variables: {repositoryId:id}})
-  const result_reviews = useQuery(GET_REVIEWS, { variables: {repositoryId: id}})
-  console.log(id)
-  console.log(result.loading)
-  console.log(result.data)
   if(result.loading) {
     return(
       <Text> Loading ...</Text>
     )
   }
-
-  if(result_reviews.loading) {
-    return(
-      <Text> Loading ...</Text>
-    )
+  const onEndReach = () => {
+    fetchMore()
   }
-  const reviews = result_reviews.data.repository.reviews
-  console.log(reviews, 'the reviews')
 
-  
-  const reviewNodes = reviews
-    ? reviews.edges.map((edge) => edge.node)
-    : [];
-  
-  
   return (
-    <FlatList
-      data={reviewNodes}
-      renderItem={({ item }) => <ReviewItem review={item} />}
-      keyExtractor={({ id }) => id}
-      ListHeaderComponent={() => <SingleRepositoryView repository={result.data.repository} />}
-      // ...
-    />
+    <SingleRepoContainer 
+      repository = {result.data.repository} 
+      reviews = {reviews} 
+      onEndReach = {onEndReach} />
   );
 };
 

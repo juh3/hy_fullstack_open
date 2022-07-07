@@ -4,26 +4,35 @@ import { GET_REPOSITORIES } from '../graphql/queries'
 import parseFilter from '../utils/parseFilter';
 
 const useRepositories = (filter, keyword) => {
-  const [repositories, setRepositories] = useState()
-  console.log(filter)
-  console.log(keyword)
-  const searchObject = parseFilter(filter)
-  console.log(searchObject)
-  const filterObject = { ...searchObject, searchKeyword: keyword}
-  const {data, loading} = useQuery(GET_REPOSITORIES, { fetchPolicy: 'cache-and-network', variables: filterObject})
+  
+  let searchObject = parseFilter(filter)
+  let variables = { ...searchObject, searchKeyword: keyword, first: 5}
+  const {data, loading, fetchMore, refetch} = useQuery(GET_REPOSITORIES, { fetchPolicy: 'cache-and-network', variables: variables})
 
-  const fetchRepositories = async () => {
-    if(data !== undefined && data.repositories !== undefined ){
-        setRepositories(data.repositories);
+  const handleFetchMore = () => {
+    console.log('im HERE')
+    const canFetchMore = !loading && data?.repositories.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
     }
+
+    fetchMore({
+      query: GET_REPOSITORIES,
+      variables: {
+        after: data.repositories.pageInfo.endCursor,
+        ...variables,
+      },
+    });
   };
 
-  useEffect(() => {
-    fetchRepositories()
-  }, [data])
 
-
-  return { repositories, loading };
+  return {
+    repositories: data?.repositories,
+    fetchMore: handleFetchMore,
+    loading,
+    refetch,
+  };
   
   
 };

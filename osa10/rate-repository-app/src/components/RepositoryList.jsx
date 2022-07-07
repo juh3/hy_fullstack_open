@@ -52,10 +52,6 @@ export class RepositoryListContainer extends REACT.Component {
     const repositoryNodes = this.props.repositories
       ? this.props.repositories.edges.map((edge) => edge.node)
       : [];
-    
-   
-
-
 
     return (
       <FlatList
@@ -65,7 +61,9 @@ export class RepositoryListContainer extends REACT.Component {
         renderItem = {({ item }) => 
           <IdPressable item = {item} />
         }
-        />
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.5}
+      />
     )
 }}
 
@@ -89,9 +87,18 @@ const RepositoryList = () => {
   const [ keyword, setKeyword] = useState("")
   const [keywordValue] = useDebounce(keyword, 500)
 
-  const { repositories } = useRepositories(filter, keywordValue)
+  const { repositories, fetchMore } = useRepositories(filter, keywordValue)
+  const onEndReach = () => {
+    fetchMore()
+  }
 
-  return <RepositoryListContainer repositories={repositories} filter = {filter} setFilter = {setFilter} setKeyword = {setKeyword}  />;
+  return <RepositoryListContainer 
+    repositories={repositories} 
+    filter = {filter} 
+    setFilter = {setFilter} 
+    setKeyword = {setKeyword} 
+    onEndReach = {onEndReach}  
+  />;
 };
 
 export default RepositoryList;
